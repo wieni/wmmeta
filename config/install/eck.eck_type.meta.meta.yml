@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eck.eck_entity_type.meta
+name: Meta
+type: meta
+description: 'General information about an entity (description, image, ...)'

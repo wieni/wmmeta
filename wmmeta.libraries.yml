@@ -1,0 +1,3 @@
+scheduling:
+  js:
+    js/scheduling.js: {}

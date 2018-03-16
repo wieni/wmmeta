@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eck.eck_type.meta.meta
+    - field.storage.meta.field_meta_image
+    - media.type.image
+  module:
+    - wmmedia
+third_party_settings: { }
+id: meta.meta.field_meta_image
+field_name: field_meta_image
+entity_type: meta
+bundle: meta
+label: Image
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  description_field: 0
+  description_field_required: 0
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: 0
+    auto_create_bundle: ''
+  title_field: 0
+  title_field_required: 0
+field_type: wmmedia_media_image_extras

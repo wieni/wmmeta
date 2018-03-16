@@ -1,0 +1,48 @@
+<?php
+
+function wmmeta_uninstall()
+{
+    $entityTypeManager = \Drupal::entityTypeManager();
+
+    $fieldConfigStorage = $entityTypeManager->getStorage('field_config');
+    $fieldStorageConfigStorage = $entityTypeManager->getStorage('field_storage_config');
+    $metaStorage = $entityTypeManager->getStorage('meta');
+    $eckStorage = $entityTypeManager->getStorage('eck_entity_type');
+
+    // Delete fields
+    $query = $fieldConfigStorage->getQuery()
+        ->condition('field_name', 'field_meta')
+        ->condition('entity_type', 'node');
+
+    $fieldConfigStorage->delete(
+        $fieldConfigStorage->loadMultiple(
+            $query->execute()
+        )
+    );
+
+    // Delete field storage
+    $query = $fieldStorageConfigStorage->getQuery()
+        ->condition('field_name', 'field_meta')
+        ->condition('entity_type', 'node');
+
+    $fieldStorageConfigStorage->delete($fieldStorageConfigStorage->loadMultiple(
+        $query->execute()
+    ));
+
+    // Delete bundle
+    $query = $metaStorage->getQuery()
+        ->condition('type', 'meta');
+
+    $metaStorage->delete(
+        $metaStorage->loadMultiple(
+            $query->execute()
+        )
+    );
+
+    // Delete entity type
+    $entityType = $eckStorage->load('meta');
+    $entityType->delete();
+
+    // Clear cached definitions
+    $entityTypeManager->clearCachedDefinitions();
+}

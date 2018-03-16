@@ -1,0 +1,26 @@
+<?php
+
+function wmmeta_cron()
+{
+    \Drupal::getContainer()->get('wmmeta.scheduler')->runSchedule();
+}
+
+function wmmeta_theme()
+{
+    return [
+        'metaHeadTags' => [
+            'variables' => [
+                'meta' => \Drupal::getContainer()->get('wmmeta.subscriber')->getMeta(),
+            ],
+            'path' => drupal_get_path('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
+            'template' => 'head_tags',
+        ]
+    ];
+}
+
+function wmmeta_preprocess_html(&$variables)
+{
+    $variables['metaHeadTags'] = [
+        '#theme' => 'metaHeadTags',
+    ];
+}

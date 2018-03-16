@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eck.eck_type.meta.meta
+    - field.storage.meta.field_publish_status
+  module:
+    - options
+id: meta.meta.field_publish_status
+field_name: field_publish_status
+entity_type: meta
+bundle: meta
+label: 'Publish status'
+description: ''
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

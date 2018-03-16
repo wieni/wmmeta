@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eck.eck_type.meta.meta
+    - field.storage.meta.field_meta_description
+id: meta.meta.field_meta_description
+field_name: field_meta_description
+entity_type: meta
+bundle: meta
+label: Description
+description: 'The description that will be used for teasers, Facebook, Google, etc.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

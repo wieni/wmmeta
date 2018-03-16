@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eck.eck_type.meta.meta
+    - field.storage.meta.field_publish_on
+  module:
+    - datetime
+id: meta.meta.field_publish_on
+field_name: field_publish_on
+entity_type: meta
+bundle: meta
+label: 'Publish date'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    default_date_type: now
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: datetime

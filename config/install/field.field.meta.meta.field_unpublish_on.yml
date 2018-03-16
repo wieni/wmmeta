@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - eck.eck_type.meta.meta
+    - field.storage.meta.field_unpublish_on
+  module:
+    - datetime
+id: meta.meta.field_unpublish_on
+field_name: field_unpublish_on
+entity_type: meta
+bundle: meta
+label: 'Unpublish on'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - wmmeta
+title: 'Node scheduler'
+id: wmmeta_cron
+weight: 0
+module: wmmeta
+callback: wmmeta_cron
+scheduler:
+  id: simple
+  configuration:
+    rules:
+      - '* * * * *'

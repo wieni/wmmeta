@@ -1,0 +1,20 @@
+{
+  "name": "wieni/wmmeta",
+  "description": "Provides meta fields & node scheduling functionality",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Wieni",
+      "email": "info@wieni.be"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://packagist.drupal-composer.org"
+    }
+  ],
+  "minimum-stability": "alpha",
+  "prefer-stable": true,
+  "type": "drupal-module"
+}

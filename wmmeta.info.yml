@@ -1,0 +1,12 @@
+name: wmmeta
+type: module
+description: Wieni Meta
+core: 8.x
+package: Wieni
+dependencies:
+    - eck
+    - imgix
+    - wmcontroller
+    - wmcustom
+    - wmmedia
+    - wmsingles
