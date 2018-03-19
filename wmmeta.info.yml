@@ -7,6 +7,4 @@ dependencies:
     - eck
     - imgix
     - wmcontroller
-    - wmcustom
     - wmmedia
-    - wmsingles

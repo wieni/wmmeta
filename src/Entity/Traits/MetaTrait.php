@@ -2,27 +2,22 @@
 
 namespace Drupal\wmmeta\Entity\Traits;
 
-use Drupal\eck\Entity\EckEntity;
+use Drupal\wmmeta\Entity\Eck\Meta\Meta;
 
 trait MetaTrait
 {
-    /**
-     * @return EckEntity
-     */
-    public function getMeta()
+    public function getMeta(): Meta
     {
-        /** @var EckEntity $meta */
+        /** @var Meta $meta */
         $meta = $this->get('field_meta')->entity;
         $langcode = $this->language()->getId();
 
         if (!$meta) {
             $meta = $this->entityTypeManager()
                 ->getStorage('meta')
-                ->create([
-                    'type' => 'meta',
-                ]);
+                ->create(['type' => 'meta']);
             $meta = $meta->hasTranslation($langcode) ? $meta->getTranslation($langcode) : $meta->addTranslation($langcode);
-            $this->field_meta = $meta;
+            $this->set('field_meta', $meta);
             return $this->field_meta->entity;
         }
 

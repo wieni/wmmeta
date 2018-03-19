@@ -10,7 +10,7 @@ function wmmeta_theme()
     return [
         'metaHeadTags' => [
             'variables' => [
-                'meta' => \Drupal::getContainer()->get('wmmeta.subscriber')->getMeta(),
+                'meta' => \Drupal::getContainer()->get('wmmeta.meta')->getMetaData(),
             ],
             'path' => drupal_get_path('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
             'template' => 'head_tags',

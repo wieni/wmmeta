@@ -9,7 +9,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\node\NodeInterface;
-use Drupal\wmcustom\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\Eck\Meta\Meta;
 
 class Scheduler
 {

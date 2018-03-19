@@ -2,10 +2,11 @@
 
 namespace Drupal\wmmeta\EventSubscriber;
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\hook_event_dispatcher\Event\Entity\BaseEntityEvent;
 use Drupal\hook_event_dispatcher\HookEventDispatcherEvents;
-use Drupal\wmcustom\Entity\Eck\Meta\Meta;
-use Drupal\wmcustom\Entity\Node\NodeModel;
+use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\MetaDataInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SchedulerSubscriber implements EventSubscriberInterface
@@ -19,10 +20,9 @@ class SchedulerSubscriber implements EventSubscriberInterface
 
     public function setEntityStatus(BaseEntityEvent $event)
     {
-        /* @var \Drupal\Core\Entity\ContentEntityInterface $entity */
         $entity = $event->getEntity();
 
-        if (!$entity instanceof NodeModel || !$entity->hasField('field_meta')) {
+        if (!$entity instanceof MetaDataInterface || !$entity->hasField('field_meta')) {
             return;
         }
 
@@ -36,30 +36,30 @@ class SchedulerSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function publishEntity(NodeModel $entity)
+    private function publishEntity(MetaDataInterface $entity)
     {
-        /** @var NodeModel $original */
+        /** @var MetaDataInterface $original */
         $original = $entity->original;
         $entity->setPublished();
         if (!$original || !$original->isPublished()) {
-            $entity->setCreatedTime(time());
+            $entity->set('created', time());
         }
         $this->clearScheduled($entity);
     }
 
-    private function unPublishEntity(NodeModel $entity)
+    private function unPublishEntity(MetaDataInterface $entity)
     {
         $entity->setUnpublished();
         $this->clearScheduled($entity);
     }
 
-    private function scheduleEntity(NodeModel $entity)
+    private function scheduleEntity(MetaDataInterface $entity)
     {
         $now = time();
 
         $publishOn = $entity->getMeta()->getPublishOn();
         if (!$publishOn) {
-            $publishOn = $entity->getCreated();
+            $publishOn = $this->getCreated($entity);
         }
 
         $unpublishOn = $entity->getMeta()->getUnpublishOn();
@@ -70,7 +70,7 @@ class SchedulerSubscriber implements EventSubscriberInterface
             $entity->setUnpublished();
 
             if ($now >= $stamp) {
-                $entity->setCreatedTime($stamp);
+                $entity->set('created', $stamp);
                 $entity->setPublished();
             }
         }
@@ -82,11 +82,44 @@ class SchedulerSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function clearScheduled(NodeModel $entity)
+    private function clearScheduled(MetaDataInterface $entity)
     {
         $meta = $entity->getMeta();
         $meta->setPublishOn();
         $meta->setUnpublishOn();
         $meta->save();
+    }
+
+    protected function getCreated(MetaDataInterface $entity)
+    {
+        /** @var \DateTime $date */
+        if (!$entity->hasField('created')) {
+            return null;
+        }
+
+        /* @var \Drupal\Core\Field\FieldItemListInterface $fieldList */
+        $fieldList = $entity->get('created');
+        /* @var \Drupal\Core\Field\FieldItemInterface $item */
+        $item = $fieldList->first();
+        $value = ($item) ? $item->getValue() : [];
+
+        // Early check to see if the date is valid, pre validation dates are arrays.
+        if (empty($value['value']) || is_array($value['value'])) {
+            return null;
+        }
+
+        if (!(($date = $fieldList->date) || ($date = $fieldList->value))) {
+            return null;
+        }
+
+        if ($date instanceof DrupalDateTime) {
+            $date = $date->format('U');
+        }
+
+        return \DateTime::createFromFormat(
+            'U',
+            $date,
+            (new \DateTimeZone(drupal_get_user_timezone()))
+        );
     }
 }

@@ -10,7 +10,7 @@ entity_type: meta
 type: list_string
 settings:
   allowed_values: {  }
-  allowed_values_function: 'Drupal\wmcustom\Entity\Eck\Meta\Meta::getStatuses'
+  allowed_values_function: 'Drupal\wmmeta\Entity\Eck\Meta\Meta::getStatuses'
 module: options
 locked: false
 cardinality: 1

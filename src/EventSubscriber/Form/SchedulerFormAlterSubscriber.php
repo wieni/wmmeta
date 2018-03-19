@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\hook_event_dispatcher\Event\Form\BaseFormEvent;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeForm;
-use Drupal\wmcustom\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\Eck\Meta\Meta;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SchedulerFormAlterSubscriber implements EventSubscriberInterface
@@ -50,7 +50,7 @@ class SchedulerFormAlterSubscriber implements EventSubscriberInterface
         $form['field_publish_on']['widget'][0]['#theme_wrappers'] = ['form_element'];
 
         $form['field_unpublish_on']['#states'] = [
-             'visible' => [
+            'visible' => [
                 ':input[name="field_meta[0][inline_entity_form][field_publish_status]"]' => ['value' => Meta::SCHEDULED],
             ],
         ];
