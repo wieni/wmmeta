@@ -8,7 +8,7 @@ use Drupal\imgix\ImgixManager;
 use Drupal\imgix\Plugin\Field\FieldType\ImgixFieldType;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaFileExtras;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaImageExtras;
-use Drupal\wmmeta\Entity\MetaDataInterface;
+use Drupal\wmmeta\Entity\EntityMetaInterface;
 
 class MetaService
 {
@@ -21,7 +21,7 @@ class MetaService
 
     /** @var array */
     protected $defaultMeta;
-    /** @var MetaDataInterface */
+    /** @var EntityMetaInterface */
     protected $entity;
 
     public function __construct(
@@ -66,7 +66,7 @@ class MetaService
     }
 
     /**
-     * @return MetaDataInterface|null
+     * @return EntityMetaInterface|null
      */
     public function getEntity()
     {
@@ -74,14 +74,14 @@ class MetaService
     }
 
     /**
-     * @param MetaDataInterface $entity
+     * @param EntityMetaInterface $entity
      */
-    public function setEntity(MetaDataInterface $entity)
+    public function setEntity(EntityMetaInterface $entity)
     {
         $this->entity = $entity;
     }
 
-    protected function getEntityMetaData(MetaDataInterface $entity)
+    protected function getEntityMetaData(EntityMetaInterface $entity)
     {
         return array_filter($entity->toMetaOGArray());
     }

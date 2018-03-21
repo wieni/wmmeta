@@ -4,7 +4,7 @@ namespace Drupal\wmmeta\EventSubscriber;
 
 use Drupal\wmcontroller\Event\MainEntityEvent;
 use Drupal\wmcontroller\WmcontrollerEvents;
-use Drupal\wmmeta\Entity\MetaDataInterface;
+use Drupal\wmmeta\Entity\EntityMetaInterface;
 use Drupal\wmmeta\Service\MetaService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -29,7 +29,7 @@ class EntityMetaSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof MetaDataInterface || !$entity->hasField('field_meta')) {
+        if (!$entity instanceof EntityMetaInterface || !$entity->hasField('field_meta')) {
             return;
         }
 

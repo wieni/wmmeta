@@ -6,7 +6,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\hook_event_dispatcher\Event\Entity\BaseEntityEvent;
 use Drupal\hook_event_dispatcher\HookEventDispatcherEvents;
 use Drupal\wmmeta\Entity\Eck\Meta\Meta;
-use Drupal\wmmeta\Entity\MetaDataInterface;
+use Drupal\wmmeta\Entity\EntityPublishedInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SchedulerSubscriber implements EventSubscriberInterface
@@ -22,7 +22,7 @@ class SchedulerSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof MetaDataInterface || !$entity->hasField('field_meta')) {
+        if (!$entity instanceof EntityPublishedInterface || !$entity->hasField('field_meta')) {
             return;
         }
 
@@ -36,9 +36,9 @@ class SchedulerSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function publishEntity(MetaDataInterface $entity)
+    private function publishEntity(EntityPublishedInterface $entity)
     {
-        /** @var MetaDataInterface $original */
+        /** @var EntityPublishedInterface $original */
         $original = $entity->original;
         $entity->setPublished();
         if (!$original || !$original->isPublished()) {
@@ -47,13 +47,13 @@ class SchedulerSubscriber implements EventSubscriberInterface
         $this->clearScheduled($entity);
     }
 
-    private function unPublishEntity(MetaDataInterface $entity)
+    private function unPublishEntity(EntityPublishedInterface $entity)
     {
         $entity->setUnpublished();
         $this->clearScheduled($entity);
     }
 
-    private function scheduleEntity(MetaDataInterface $entity)
+    private function scheduleEntity(EntityPublishedInterface $entity)
     {
         $now = time();
 
@@ -82,7 +82,7 @@ class SchedulerSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function clearScheduled(MetaDataInterface $entity)
+    private function clearScheduled(EntityPublishedInterface $entity)
     {
         $meta = $entity->getMeta();
         $meta->setPublishOn();
@@ -90,7 +90,7 @@ class SchedulerSubscriber implements EventSubscriberInterface
         $meta->save();
     }
 
-    protected function getCreated(MetaDataInterface $entity)
+    protected function getCreated(EntityPublishedInterface $entity)
     {
         /** @var \DateTime $date */
         if (!$entity->hasField('created')) {
