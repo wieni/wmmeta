@@ -8,6 +8,7 @@ use Drupal\hook_event_dispatcher\Event\Form\BaseFormEvent;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeForm;
 use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\EntityPublishedInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SchedulerFormAlterSubscriber implements EventSubscriberInterface
@@ -57,7 +58,7 @@ class SchedulerFormAlterSubscriber implements EventSubscriberInterface
         $form['field_unpublish_on']['widget'][0]['#theme_wrappers'] = ['form_element'];
 
         $entity = $this->getParentFormEntity($formState);
-        if (empty($entity)) {
+        if (!$entity instanceof EntityPublishedInterface) {
             return;
         }
 

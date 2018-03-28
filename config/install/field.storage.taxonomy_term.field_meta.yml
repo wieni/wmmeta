@@ -3,7 +3,7 @@ status: true
 dependencies:
   module:
     - eck
-    - taxonomy_term
+    - taxonomy
 id: taxonomy_term.field_meta
 field_name: field_meta
 entity_type: taxonomy_term
