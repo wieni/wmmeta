@@ -33,12 +33,12 @@ class Scheduler
     public function runSchedule()
     {
         foreach ($this->languageManager->getLanguages() as $language) {
-            $this->logger->info(
+            $this->logger->debug(
                 'Running scheduler for lang: ' . $language->getId()
             );
             $this->publishNodes($language->getId());
             $this->unPublishNodes($language->getId());
-            $this->logger->info(
+            $this->logger->debug(
                 'Finished scheduler for lang: ' . $language->getId()
             );
         }
