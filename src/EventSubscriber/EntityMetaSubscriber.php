@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class EntityMetaSubscriber implements EventSubscriberInterface
 {
     /** @var MetaService */
-    private $metaService;
+    protected $metaService;
 
     public function __construct(
         MetaService $metaService

@@ -36,7 +36,7 @@ class SchedulerSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function publishEntity(EntityPublishedInterface $entity)
+    protected function publishEntity(EntityPublishedInterface $entity)
     {
         /** @var EntityPublishedInterface $original */
         $original = $entity->original;
@@ -47,13 +47,13 @@ class SchedulerSubscriber implements EventSubscriberInterface
         $this->clearScheduled($entity);
     }
 
-    private function unPublishEntity(EntityPublishedInterface $entity)
+    protected function unPublishEntity(EntityPublishedInterface $entity)
     {
         $entity->setUnpublished();
         $this->clearScheduled($entity);
     }
 
-    private function scheduleEntity(EntityPublishedInterface $entity)
+    protected function scheduleEntity(EntityPublishedInterface $entity)
     {
         $now = time();
 
@@ -82,7 +82,7 @@ class SchedulerSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function clearScheduled(EntityPublishedInterface $entity)
+    protected function clearScheduled(EntityPublishedInterface $entity)
     {
         $meta = $entity->getMeta();
         $meta->setPublishOn();

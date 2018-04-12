@@ -14,11 +14,11 @@ use Drupal\wmmeta\Entity\Eck\Meta\Meta;
 class Scheduler
 {
     /** @var EntityStorageInterface */
-    private $storage;
+    protected $storage;
     /** @var LanguageManagerInterface */
-    private $languageManager;
-    /** @var \Drupal\Core\Logger\LoggerChannelInterface */
-    private $logger;
+    protected $languageManager;
+    /** @var \Psr\Log\LoggerInterface */
+    protected $logger;
 
     public function __construct(
         EntityTypeManagerInterface $etm,
@@ -44,7 +44,7 @@ class Scheduler
         }
     }
 
-    private function publishNodes($langId)
+    protected function publishNodes($langId)
     {
         foreach ($this->shouldBePublished($langId) as $node) {
             $this->logger->info(sprintf(
@@ -58,7 +58,7 @@ class Scheduler
         }
     }
 
-    private function unPublishNodes($langId)
+    protected function unPublishNodes($langId)
     {
         foreach ($this->shouldBeUnpublished($langId) as $node) {
             $this->logger->info(sprintf(
@@ -72,7 +72,7 @@ class Scheduler
         }
     }
 
-    private function shouldBePublished($langId)
+    protected function shouldBePublished($langId)
     {
         $now = $this->getCurrentDate();
 
@@ -106,7 +106,7 @@ class Scheduler
         return $this->loadMultiple($ids, $langId);
     }
 
-    private function shouldBeUnpublished($langId)
+    protected function shouldBeUnpublished($langId)
     {
         $now = $this->getCurrentDate();
 
@@ -130,7 +130,7 @@ class Scheduler
     /**
      * @return NodeInterface[]
      */
-    private function loadMultiple($ids, $langId)
+    protected function loadMultiple($ids, $langId)
     {
         if (!$ids) {
             return [];
@@ -150,7 +150,7 @@ class Scheduler
         return array_filter($nodes);
     }
 
-    private function getCurrentDate()
+    protected function getCurrentDate()
     {
         $now = new DrupalDateTime('now', DateTimeItemInterface::STORAGE_TIMEZONE);
 
