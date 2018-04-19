@@ -9,3 +9,4 @@ dependencies:
     - wmcontroller
     - wmmedia
     - maxlength
+    - hook_event_dispatcher
