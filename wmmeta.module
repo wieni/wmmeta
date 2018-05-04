@@ -8,9 +8,9 @@ function wmmeta_cron()
 function wmmeta_theme()
 {
     return [
-        'metaHeadTags' => [
+        'meta_head_tags' => [
             'variables' => [
-                'meta' => \Drupal::getContainer()->get('wmmeta.meta')->getMetaData(),
+                'meta' => \Drupal::getContainer()->get('wmmeta.meta')->getDefaultMetaData(),
             ],
             'path' => drupal_get_path('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
             'template' => 'head_tags',
@@ -21,6 +21,7 @@ function wmmeta_theme()
 function wmmeta_preprocess_html(&$variables)
 {
     $variables['metaHeadTags'] = [
-        '#theme' => 'metaHeadTags',
+        '#theme' => 'meta_head_tags',
+        '#meta' => \Drupal::getContainer()->get('wmmeta.meta')->getMetaData(),
     ];
 }

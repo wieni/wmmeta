@@ -49,7 +49,7 @@ class MetaService
         return $meta;
     }
 
-    protected function getDefaultMetaData()
+    public function getDefaultMetaData()
     {
         if (empty($this->defaultMeta)) {
             $this->defaultMeta = [
