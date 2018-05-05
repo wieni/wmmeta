@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Url;
+
 function wmmeta_cron()
 {
     \Drupal::getContainer()->get('wmmeta.scheduler')->runSchedule();
@@ -23,5 +25,17 @@ function wmmeta_preprocess_html(&$variables)
     $variables['metaHeadTags'] = [
         '#theme' => 'meta_head_tags',
         '#meta' => \Drupal::getContainer()->get('wmmeta.meta')->getMetaData(),
+    ];
+}
+
+function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInterface $form_state)
+{
+    $entityForm['seo_preview']['trigger'] = [
+        '#markup' => sprintf(
+            '<a href="%s" class="use-ajax button" data-dialog-type="dialog">%s</a>',
+            Url::fromRoute('wmmeta.preview_modal')->toString(),
+            t('Open preview')
+        ),
+        '#weight' => 10000,
     ];
 }
