@@ -13,13 +13,11 @@ class PreviewModalController extends ControllerBase {
         $options = [
             'dialogClass' => 'wmmeta-preview-dialog',
             'width' => 550,
-            'height' => 400,
             'position' => [
                 'my' => 'right bottom',
                 'at' => 'right-10 bottom-10'
             ],
             'draggable' => true,
-            'autoResize' => false,
         ];
 
         $content['seo_preview'] = [
