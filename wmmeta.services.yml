@@ -1,6 +1,6 @@
 services:
-    wmmeta.form.scheduler.subscriber:
-        class: Drupal\wmmeta\EventSubscriber\Form\SchedulerFormAlterSubscriber
+    wmmeta.form.preview.subscriber:
+        class: Drupal\wmmeta\EventSubscriber\Form\PreviewFormAlterSubscriber
         tags: [{ name: event_subscriber }]
 
     wmmeta.subscriber:
