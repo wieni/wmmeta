@@ -62,6 +62,10 @@ class MetaService
             ];
         }
 
+        if (empty($this->defaultMeta['twitter_handle'])) {
+            $this->defaultMeta['twitter_handle'] = $this->configFactory->get('wmmeta.settings')->get('site.twitter_handle');
+        }
+
         return $this->defaultMeta;
     }
 
