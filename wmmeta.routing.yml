@@ -1,0 +1,8 @@
+wmmeta.preview_modal:
+    path: '/wmmeta/preview'
+    defaults:
+        _controller: 'Drupal\wmmeta\Controller\PreviewModalController::modal'
+    requirements:
+        _access: 'TRUE'
+    options:
+        _admin_route: TRUE

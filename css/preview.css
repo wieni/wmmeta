@@ -1,0 +1,11 @@
+.wmmeta-preview-dialog {
+    border: 1px solid #6b6b6b;
+    border-radius: 5px 5px 0 0;
+    box-shadow: 0 0 10px #6b6b6b;
+
+    position: fixed !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    left: auto !important;
+    top: auto !important;
+}

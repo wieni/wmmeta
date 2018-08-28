@@ -1,3 +1,27 @@
 scheduling:
-  js:
-    js/scheduling.js: {}
+    js:
+        js/scheduling.js: {}
+    dependencies:
+        - core/jquery
+
+preview:
+    js:
+        js/preview.js: {}
+    css:
+        theme:
+            css/preview.css: {}
+    dependencies:
+        - core/jquery
+        - core/drupal.dialog.ajax
+        - wmmeta/jquery-seopreview
+
+jquery-seopreview:
+    version: 1.0.1
+    js:
+        js/jquery-seopreview.min.js: {}
+    css:
+        theme:
+            css/jquery-seopreview.css: {}
+    dependencies:
+        - core/jquery
+

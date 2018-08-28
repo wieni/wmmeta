@@ -1,5 +1,11 @@
 <?php
 
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Entity\EntityForm;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\EntityPublishedInterface;
+
 function wmmeta_cron()
 {
     \Drupal::getContainer()->get('wmmeta.scheduler')->runSchedule();
@@ -23,5 +29,51 @@ function wmmeta_preprocess_html(&$variables)
     $variables['metaHeadTags'] = [
         '#theme' => 'meta_head_tags',
         '#meta' => \Drupal::getContainer()->get('wmmeta.meta')->getMetaData(),
+    ];
+}
+
+function wmmeta_inline_entity_form_entity_form_alter(&$form, FormStateInterface $formState)
+{
+    if ($form['#entity_type'] !== 'meta' || $form['#bundle'] !== 'meta') {
+        return;
+    }
+
+    $formEntity = $formState->getBuildInfo()['callback_object'] ?? null;
+    if (!$formEntity instanceof EntityForm) {
+        return;
+    }
+
+    $entity = $formEntity->getEntity();
+    if (!$entity instanceof EntityPublishedInterface) {
+        return;
+    }
+
+    /* @var Meta $meta */
+    $meta = $form['#entity'];
+    $status = $meta->getPublishedStatus();
+
+    if ($status && $status !== Meta::SCHEDULED) {
+        $form['field_publish_on']['widget'][0]['value']['#default_value'] = new DrupalDateTime('now');
+    }
+
+    $form['field_publish_on']['#states'] = [
+        'visible' => [
+            ':input[name="field_meta[0][inline_entity_form][field_publish_status]"]' => ['value' => Meta::SCHEDULED],
+        ],
+    ];
+    $form['field_publish_on']['widget'][0]['#theme_wrappers'] = ['form_element'];
+
+    $form['field_unpublish_on']['#states'] = [
+        'visible' => [
+            ':input[name="field_meta[0][inline_entity_form][field_publish_status]"]' => ['value' => Meta::SCHEDULED],
+        ],
+    ];
+    $form['field_unpublish_on']['widget'][0]['#theme_wrappers'] = ['form_element'];
+
+    $form['#attached']['library'][] = 'wmmeta/scheduling';
+    $form['#attached']['drupalSettings']['wmmeta']['scheduling'] = [
+        'status' => $status,
+        'created_date' => $entity->getCreated()->format('Y-m-d'),
+        'created_time' => $entity->getCreated()->format('H:i:s'),
     ];
 }
