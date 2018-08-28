@@ -1,8 +1,4 @@
 services:
-    wmmeta.form.preview.subscriber:
-        class: Drupal\wmmeta\EventSubscriber\Form\PreviewFormAlterSubscriber
-        tags: [{ name: event_subscriber }]
-
     wmmeta.subscriber:
         class: Drupal\wmmeta\EventSubscriber\EntityMetaSubscriber
         arguments: ['@wmmeta.meta']

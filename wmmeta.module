@@ -3,6 +3,7 @@
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\wmmeta\Entity\Eck\Meta\Meta;
 use Drupal\wmmeta\Entity\EntityPublishedInterface;
 
@@ -75,5 +76,17 @@ function wmmeta_inline_entity_form_entity_form_alter(&$form, FormStateInterface 
         'status' => $status,
         'created_date' => $entity->getCreated()->format('Y-m-d'),
         'created_time' => $entity->getCreated()->format('H:i:s'),
+    ];
+
+    $form['seo_preview'] = [
+        '#type' => 'item',
+        '#title' => t('Metadata preview'),
+        '#description' => t('Show a live preview of Facebook & Google metadata.'),
+        '#markup' => sprintf(
+            '<br><a href="%s" class="use-ajax button button--meta-preview" data-dialog-type="dialog">%s</a>',
+            Url::fromRoute('wmmeta.preview_modal')->toString(),
+            t('Show preview')
+        ),
+        '#weight' => $form['field_meta_image']['#weight'],
     ];
 }
