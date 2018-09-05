@@ -22,7 +22,11 @@ class SchedulerSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof EntityPublishedInterface || !$entity->hasField('field_meta')) {
+        if (
+            !$entity instanceof EntityPublishedInterface
+            || !$entity->hasField('field_meta')
+            || empty($entity->get('field_meta')->target_id)
+        ) {
             return;
         }
 
