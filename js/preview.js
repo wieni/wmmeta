@@ -6,7 +6,6 @@
 
     Drupal.behaviors.wmmetaPreview = {
         attach: function (context, settings) {
-            console.log('hey');
             const seoPreviewSettings = $.extend(true, {}, settings.wmmeta.seoPreview.settings);
             const $preview = $('#wmmeta-preview');
 
