@@ -21,3 +21,12 @@ services:
             - '@imgix.manager'
             - '@language_manager'
             - '@config.factory'
+
+    wmmeta.url_helper:
+        class: Drupal\wmmeta\Service\UrlHelper
+        arguments:
+            - '@entity_type.manager'
+            - '@path.validator'
+            - '@router.route_provider'
+            - '@language_manager'
+            - '@request_stack'

@@ -6,37 +6,34 @@
 
     Drupal.behaviors.wmmetaPreview = {
         attach: function (context, settings) {
-            let image = '';
-            const url = {};
+            console.log('hey');
+            const seoPreviewSettings = $.extend(true, {}, settings.wmmeta.seoPreview.settings);
             const $preview = $('#wmmeta-preview');
 
             if ($preview.attr('data-processed')) {
                 return;
             }
 
-            if (hasPathField() && !hasPathAuto()) {
-                url.full_url = $('#edit-path-0-alias');
-            } else if (hasPathAuto()) {
-                url.full_url = $('#edit-path-0-alias');
-                url.use_slug = true;
-                url.base_domain = window.location.origin;
+            if (hasPathAuto() || (hasPathField() && !hasPathAuto())) {
+                seoPreviewSettings.metadata.url.full_url = $('#edit-path-0-alias');
             }
 
-            image = $('[data-drupal-selector="edit-field-meta-0-inline-entity-form-field-meta-image-container-table-0"] > td:first-of-type > a').attr('href');
-            image = $('<input type="text" value="' + image + '">');
+            const $image = $('[data-drupal-selector="edit-field-meta-0-inline-entity-form-field-meta-image-container-table-0"] > td:first-of-type img');
+            let image = seoPreviewSettings.facebook.featured_image;
+            // Fixes issue with passing a string to facebook.featured_image
+            seoPreviewSettings.facebook.featured_image = $('<input type="text" value="' + image + '">');
 
-            $.seoPreview({
-                google_div: '#seopreview-google',
-                facebook_div: '#seopreview-facebook',
-                metadata: {
-                    title: $('#edit-title-0-value'),
-                    desc: $('#edit-field-meta-0-inline-entity-form-field-meta-description-0-value'),
-                    url: url,
-                },
-                facebook: {
-                    featured_image: image,
-                },
-            });
+            const $title = $('#edit-title-0-value');
+            if ($title && $title.length) {
+                seoPreviewSettings.metadata.title = $title;
+            }
+
+            const $desc = $('#edit-field-meta-0-inline-entity-form-field-meta-description-0-value');
+            if ($desc && $desc.length) {
+                seoPreviewSettings.metadata.desc = $desc;
+            }
+
+            $.seoPreview(seoPreviewSettings);
 
             $preview.attr('data-processed', true);
         },
