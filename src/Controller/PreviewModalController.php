@@ -85,14 +85,6 @@ class PreviewModalController extends ControllerBase
         $settings = [
             'google_div' => '#seopreview-google',
             'facebook_div' => '#seopreview-facebook',
-            'metadata' => [
-                'title' => '',
-                'desc' => '',
-                'url' => [],
-            ],
-            'facebook' => [
-                'featured_image' => 'https://placekitten.com/200/300',
-            ],
         ];
 
         $entity = $this->urlHelper->getRefererEntity();
