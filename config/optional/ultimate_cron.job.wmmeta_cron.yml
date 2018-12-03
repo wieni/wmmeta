@@ -3,13 +3,18 @@ status: true
 dependencies:
   module:
     - wmmeta
-title: 'Node scheduler'
+title: 'Scheduling'
 id: wmmeta_cron
 weight: 0
 module: wmmeta
 callback: wmmeta_cron
 scheduler:
-  id: simple
+  id: crontab
   configuration:
     rules:
       - '* * * * *'
+    catch_up: 0
+launcher:
+  id: serial
+logger:
+  id: database
