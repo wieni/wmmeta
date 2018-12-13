@@ -2,6 +2,7 @@
 
 namespace Drupal\wmmeta\Service;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -19,15 +20,19 @@ class Scheduler
     protected $languageManager;
     /** @var \Psr\Log\LoggerInterface */
     protected $logger;
+    /** @var \Drupal\Core\Database\Connection */
+    protected $db;
 
     public function __construct(
         EntityTypeManagerInterface $etm,
         LanguageManagerInterface $languageManager,
-        LoggerChannelFactoryInterface $loggerChannelFactory
+        LoggerChannelFactoryInterface $loggerChannelFactory,
+        Connection $db
     ) {
         $this->storage = $etm->getStorage('node');
         $this->logger = $loggerChannelFactory->get('wmmeta.scheduler');
         $this->languageManager = $languageManager;
+        $this->db = $db;
     }
 
     public function runSchedule()
@@ -76,32 +81,53 @@ class Scheduler
     {
         $now = $this->getCurrentDate();
 
-        $ids = $this->storage->getQuery()
-            ->condition('status', NodeInterface::NOT_PUBLISHED, null, $langId)
-            ->condition('langcode', $langId, null, $langId)
+        $q = $this->db->select('node_field_data', 'n')->fields('n', ['nid']);
+
+        $q->innerJoin(
+            'node__field_meta',
+            'nfm',
+            'nfm.entity_id = n.nid'
+        );
+        $q->innerJoin(
+            'meta__field_publish_status',
+            'fps',
+            "fps.entity_id = nfm.field_meta_target_id AND fps.langcode = '$langId'"
+        );
+        $q->innerJoin(
+            'meta__field_publish_on',
+            'fpo',
+            "fpo.entity_id = nfm.field_meta_target_id AND fpo.langcode = '$langId'"
+        );
+        $q->leftJoin(
+            'meta__field_unpublish_on',
+            'fuo',
+            "fuo.entity_id = nfm.field_meta_target_id AND fuo.langcode = '$langId'"
+        );
+
+        $q->condition('n.status', NodeInterface::NOT_PUBLISHED)
+            ->condition('n.langcode', $langId)
             ->condition(
-                'field_meta.entity.field_publish_status',
-                Meta::SCHEDULED,
-                null,
-                $langId
+                'fps.field_publish_status_value',
+                Meta::SCHEDULED
             )
             ->condition(
-                'field_meta.entity.field_publish_on', $now, '<=', $langId
+                'fpo.field_publish_on_value',
+                $now,
+                '<='
             )
             ->condition(
-                $this->storage->getQuery()
-                    ->orConditionGroup()
-                    ->notExists(
-                        'field_meta.entity.field_unpublish_on', $langId
+                $q->orConditionGroup()
+                    ->condition(
+                        'fuo.field_unpublish_on_value', null, 'IS NULL'
                     )
                     ->condition(
-                        'field_meta.entity.field_unpublish_on',
+                        'fuo.field_unpublish_on_value',
                         $now,
-                        '>',
-                        $langId
+                        '>'
                     )
-            )
-            ->execute();
+            );
+
+        $ids = $q->execute()->fetchCol();
 
         return $this->loadMultiple($ids, $langId);
     }
@@ -110,19 +136,42 @@ class Scheduler
     {
         $now = $this->getCurrentDate();
 
-        $ids = $this->storage->getQuery()
-            ->condition('status', NodeInterface::PUBLISHED, null, $langId)
-            ->condition('langcode', $langId, null, $langId)
+        $q = $this->db->select('node_field_data', 'n')->fields('n', ['nid']);
+
+        $q->innerJoin(
+            'node__field_meta',
+            'nfm',
+            'nfm.entity_id = n.nid'
+        );
+        $q->innerJoin(
+            'meta__field_publish_status',
+            'fps',
+            "fps.entity_id = nfm.field_meta_target_id AND fps.langcode = '$langId'"
+        );
+        $q->innerJoin(
+            'meta__field_publish_on',
+            'fpo',
+            "fpo.entity_id = nfm.field_meta_target_id AND fpo.langcode = '$langId'"
+        );
+        $q->leftJoin(
+            'meta__field_unpublish_on',
+            'fuo',
+            "fuo.entity_id = nfm.field_meta_target_id AND fuo.langcode = '$langId'"
+        );
+
+        $q->condition('n.status', NodeInterface::PUBLISHED)
+            ->condition('n.langcode', $langId)
             ->condition(
-                'field_meta.entity.field_publish_status',
-                Meta::SCHEDULED,
-                null,
-                $langId
+                'fps.field_publish_status_value',
+                Meta::SCHEDULED
             )
             ->condition(
-                'field_meta.entity.field_unpublish_on', $now, '<=', $langId
-            )
-            ->execute();
+                'fuo.field_unpublish_on_value',
+                $now,
+                '<='
+            );
+
+        $ids = $q->execute()->fetchCol();
 
         return $this->loadMultiple($ids, $langId);
     }
