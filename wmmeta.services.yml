@@ -8,6 +8,13 @@ services:
         class: Drupal\wmmeta\EventSubscriber\SchedulerSubscriber
         tags: [{ name: event_subscriber }]
 
+    wmmeta.media_usages_alter.subscriber:
+        class: Drupal\wmmeta\EventSubscriber\MediaUsagesAlterSubscriber
+        tags: [{ name: event_subscriber }]
+        arguments:
+            - '@entity_type.manager'
+            - '@entity_field.manager'
+
     wmmeta.scheduler:
         class: Drupal\wmmeta\Service\Scheduler
         arguments:
