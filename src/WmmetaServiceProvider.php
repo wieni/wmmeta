@@ -11,7 +11,7 @@ class WmmetaServiceProvider implements ServiceModifierInterface
     {
         $modules = $container->getParameter('container.modules');
 
-        if (!isset($modules['wmmedia'])) {
+        if (!isset($modules['wmmedia']) || !class_exists('Drupal\wmmedia\WmmediaEvents')) {
             $container->removeDefinition('wmmeta.media_usages_alter.subscriber');
         }
     }
