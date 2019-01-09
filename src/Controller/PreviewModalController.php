@@ -5,7 +5,9 @@ namespace Drupal\wmmeta\Controller;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\file\FileInterface;
 use Drupal\imgix\ImgixManagerInterface;
+use Drupal\wmmedia\Plugin\Field\FieldType\MediaImageExtras;
 use Drupal\wmmeta\Service\UrlHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -118,7 +120,9 @@ class PreviewModalController extends ControllerBase
             'base_domain' => sprintf('%s://%s', $urlParts['scheme'], $urlParts['host']),
         ];
 
-        if ($image = $meta->get('field_meta_image')->first()) {
+        $image = $meta->get('field_meta_image')->first();
+
+        if ($image instanceof MediaImageExtras && $image->getFile() instanceof FileInterface) {
             $imageUrl = $this->imgixManager->getImgixUrlByPreset($image->getFile(), 'default');
             $settings['facebook']['featured_image'] = $imageUrl;
         }
