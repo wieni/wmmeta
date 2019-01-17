@@ -16,12 +16,23 @@ trait MetaTrait
             $meta = $this->entityTypeManager()
                 ->getStorage('meta')
                 ->create(['type' => 'meta']);
-            $meta = $meta->hasTranslation($langcode) ? $meta->getTranslation($langcode) : $meta->addTranslation($langcode);
+
+            if (isset($meta->getTranslationLanguages(true)[$langcode])) {
+                $meta = $meta->hasTranslation($langcode)
+                    ? $meta->getTranslation($langcode)
+                    : $meta->addTranslation($langcode);
+            }
+
             $this->set('field_meta', $meta);
+
             return $this->field_meta->entity;
         }
 
-        $meta = $meta->hasTranslation($langcode) ? $meta->getTranslation($langcode) : $meta->addTranslation($langcode);
+        if (isset($meta->getTranslationLanguages(true)[$langcode])) {
+            $meta = $meta->hasTranslation($langcode)
+                ? $meta->getTranslation($langcode)
+                : $meta->addTranslation($langcode);
+        }
 
         return $meta;
     }
