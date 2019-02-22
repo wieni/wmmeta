@@ -1,7 +1,7 @@
 {
   "name": "wieni/wmmeta",
   "type": "drupal-module",
-  "description": "Provides meta fields & node scheduling functionality",
+  "description": "Provides meta fields & entity scheduling functionality",
   "license": "MIT",
   "authors": [
     {

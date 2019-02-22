@@ -9,4 +9,4 @@ wmmeta
 [![Total Downloads](https://poser.pugx.org/wieni/wmmeta/downloads)](https://packagist.org/packages/wieni/wmmeta)
 [![License](https://poser.pugx.org/wieni/wmmeta/license)](https://packagist.org/packages/wieni/wmmeta)
 
-> Provides meta fields & node scheduling functionality
+> Provides meta fields & entity scheduling functionality

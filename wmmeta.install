@@ -1,47 +1,57 @@
 <?php
 
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+
 function wmmeta_uninstall()
 {
     $entityTypeManager = \Drupal::entityTypeManager();
+    $entityFieldManager = \Drupal::getContainer()->get('entity_field.manager');
 
     $fieldConfigStorage = $entityTypeManager->getStorage('field_config');
     $fieldStorageConfigStorage = $entityTypeManager->getStorage('field_storage_config');
     $metaStorage = $entityTypeManager->getStorage('meta');
     $eckStorage = $entityTypeManager->getStorage('eck_entity_type');
 
-    // Delete fields
-    $query = $fieldConfigStorage->getQuery()
-        ->condition('field_name', 'field_meta')
-        ->condition('entity_type', 'node');
-
-    $fieldConfigStorage->delete(
-        $fieldConfigStorage->loadMultiple(
-            $query->execute()
-        )
+    /** @var EntityTypeInterface[] $entityTypes */
+    $entityTypes = array_filter(
+        $entityTypeManager->getDefinitions(),
+        function (EntityTypeInterface $entityType) use ($entityFieldManager) {
+            return $entityType->entityClassImplements(FieldableEntityInterface::class)
+                && $entityType->hasKey('published')
+                && isset($entityFieldManager->getFieldStorageDefinitions($entityType->id())['field_meta']);
+        }
     );
 
-    // Delete field storage
-    $query = $fieldStorageConfigStorage->getQuery()
-        ->condition('field_name', 'field_meta')
-        ->condition('entity_type', 'node');
+    foreach ($entityTypes as $entityType) {
+        // Delete fields
+        $ids = $fieldConfigStorage->getQuery()
+            ->condition('field_name', 'field_meta')
+            ->condition('entity_type', $entityType->id())
+            ->execute();
 
-    $fieldStorageConfigStorage->delete($fieldStorageConfigStorage->loadMultiple(
-        $query->execute()
-    ));
+        if (empty($ids)) {
+            continue;
+        }
+
+        $fieldConfigs = $fieldConfigStorage->loadMultiple($ids);
+        $fieldConfigStorage->delete($fieldConfigs);
+    }
 
     // Delete bundle
-    $query = $metaStorage->getQuery()
-        ->condition('type', 'meta');
+    $ids = $metaStorage->getQuery()
+        ->condition('type', 'meta')
+        ->execute();
 
-    $metaStorage->delete(
-        $metaStorage->loadMultiple(
-            $query->execute()
-        )
-    );
+    if (!empty($ids)) {
+        $metas = $metaStorage->loadMultiple($ids);
+        $metaStorage->delete($metas);
+    }
 
     // Delete entity type
-    $entityType = $eckStorage->load('meta');
-    $entityType->delete();
+    $eckStorage
+        ->load('meta')
+        ->delete();
 
     // Clear cached definitions
     $entityTypeManager->clearCachedDefinitions();
