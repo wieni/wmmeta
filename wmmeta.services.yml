@@ -15,6 +15,10 @@ services:
             - '@entity_type.manager'
             - '@entity_field.manager'
 
+    wmmeta.meta_form_alter.subscriber:
+        class: Drupal\wmmeta\EventSubscriber\MetaFormAlterSubscriber
+        tags: [{ name: event_subscriber }]
+
     wmmeta.scheduler:
         class: Drupal\wmmeta\Service\Scheduler
         arguments:
