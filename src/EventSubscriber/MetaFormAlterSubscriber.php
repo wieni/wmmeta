@@ -50,6 +50,7 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
 
     public static function addSchedulingFieldsStates(array $form, FormStateInterface $formState): array
     {
+        /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
         $entity = $formState->getFormObject()->getEntity();
         $status = $form['#entity']->getPublishedStatus();
 
@@ -72,11 +73,27 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
         $form['field_unpublish_on']['widget'][0]['#theme_wrappers'] = ['form_element'];
 
         $form['#attached']['library'][] = 'wmmeta/scheduling';
-        $form['#attached']['drupalSettings']['wmmeta']['scheduling'] = [
+
+        $settings = [
             'status' => $status,
-            'created_date' => $entity->getCreated()->format('Y-m-d'),
-            'created_time' => $entity->getCreated()->format('H:i:s'),
+            'created_date' => null,
+            'created_time' => null,
         ];
+
+        if ($entity->hasField('created') && !$entity->get('created')->isEmpty()) {
+            $date = \DateTime::createFromFormat(
+                'U',
+                $entity->get('created')->value,
+                new \DateTimeZone(drupal_get_user_timezone())
+            );
+
+            $settings['created_date'] = $date->format('Y-m-d');
+            $settings['created_time'] = $date->format('Y-m-d');
+        }
+
+        $form['#attached']['drupalSettings']['wmmeta']['scheduling'] = $settings;
+
+
 
         return $form;
     }
