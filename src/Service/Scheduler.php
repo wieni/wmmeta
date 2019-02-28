@@ -53,8 +53,13 @@ class Scheduler
                     $language->getId()
                 ));
 
-                $this->doPublish($entityType, $language->getId());
-                $this->doUnPublish($entityType, $language->getId());
+                foreach ($this->shouldBePublished($entityType, $language->getId()) as $entity) {
+                    $this->doPublish($entity);
+                }
+
+                foreach ($this->shouldBeUnpublished($entityType, $language->getId()) as $entity) {
+                    $this->doUnPublish($entity);
+                }
 
                 $this->logger->debug(sprintf(
                     'Finished %s scheduler for lang: %s',
@@ -65,40 +70,36 @@ class Scheduler
         }
     }
 
-    protected function doPublish(EntityTypeInterface $entityType, string $langId)
+    protected function doPublish(ContentEntityInterface $entity)
     {
-        foreach ($this->shouldBePublished($entityType, $langId) as $entity) {
-            $this->logger->info(sprintf(
-                'Publishing scheduled %s with bundle %s, language %s and id %s',
-                $entityType->getLabel(),
-                $entity->bundle(),
-                $entity->language()->getId(),
-                $entity->id()
-            ));
+        $this->logger->info(sprintf(
+            'Publishing scheduled %s with bundle %s, language %s and id %s',
+            $entity->type->getLabel(),
+            $entity->bundle(),
+            $entity->language()->getId(),
+            $entity->id()
+        ));
 
-            $entity->setPublished();
-            $entity->save();
-        }
+        $entity->setPublished();
+        $entity->save();
     }
 
-    protected function doUnPublish(EntityTypeInterface $entityType, string $langId)
+    protected function doUnPublish(ContentEntityInterface $entity)
     {
-        foreach ($this->shouldBeUnpublished($entityType, $langId) as $entity) {
-            $this->logger->info(sprintf(
-                'Unpublishing scheduled %s with bundle %s, language %s and id %s',
-                $entityType->getLabel(),
-                $entity->bundle(),
-                $entity->language()->getId(),
-                $entity->id()
-            ));
+        $this->logger->info(sprintf(
+            'Unpublishing scheduled %s with bundle %s, language %s and id %s',
+            $entity->type->getLabel(),
+            $entity->bundle(),
+            $entity->language()->getId(),
+            $entity->id()
+        ));
 
-            $entity->setUnpublished();
-            $entity->save();
-        }
+        $entity->setUnpublished();
+        $entity->save();
     }
 
     /** @return ContentEntityInterface[] */
-    protected function shouldBePublished(EntityTypeInterface $entityType, string $langId): array
+    protected function shouldBePublished(EntityTypeInterface $entityType, string $langcode): array
     {
         $now = $this->getCurrentDate();
         $storage = $this->entityTypeManager->getStorage($entityType->id());
@@ -115,21 +116,21 @@ class Scheduler
         $q->innerJoin(
             'meta__field_publish_status',
             'fps',
-            "fps.entity_id = fm.field_meta_target_id AND fps.langcode = '$langId'"
+            "fps.entity_id = fm.field_meta_target_id AND fps.langcode = '$langcode'"
         );
         $q->innerJoin(
             'meta__field_publish_on',
             'fpo',
-            "fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = '$langId'"
+            "fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = '$langcode'"
         );
         $q->leftJoin(
             'meta__field_unpublish_on',
             'fuo',
-            "fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = '$langId'"
+            "fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = '$langcode'"
         );
 
         $q->condition("data.{$entityType->getKey('published')}", 0)
-            ->condition('data.langcode', $langId)
+            ->condition('data.langcode', $langcode)
             ->condition('fps.field_publish_status_value', Meta::SCHEDULED)
             ->condition('fpo.field_publish_on_value', $now, '<=')
             ->condition(
@@ -140,11 +141,11 @@ class Scheduler
 
         $ids = $q->execute()->fetchCol();
 
-        return $this->loadMultiple($storage, $ids, $langId);
+        return $this->loadMultiple($storage, $ids, $langcode);
     }
 
     /** @return ContentEntityInterface[] */
-    protected function shouldBeUnpublished(EntityTypeInterface $entityType, string $langId): array
+    protected function shouldBeUnpublished(EntityTypeInterface $entityType, string $langcode): array
     {
         $now = $this->getCurrentDate();
         $storage = $this->entityTypeManager->getStorage($entityType->id());
@@ -161,27 +162,27 @@ class Scheduler
         $q->innerJoin(
             'meta__field_publish_status',
             'fps',
-            "fps.entity_id = fm.field_meta_target_id AND fps.langcode = '$langId'"
+            "fps.entity_id = fm.field_meta_target_id AND fps.langcode = '$langcode'"
         );
         $q->innerJoin(
             'meta__field_publish_on',
             'fpo',
-            "fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = '$langId'"
+            "fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = '$langcode'"
         );
         $q->leftJoin(
             'meta__field_unpublish_on',
             'fuo',
-            "fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = '$langId'"
+            "fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = '$langcode'"
         );
 
         $q->condition("data.{$entityType->getKey('published')}", 1)
-            ->condition('data.langcode', $langId)
+            ->condition('data.langcode', $langcode)
             ->condition('fps.field_publish_status_value', Meta::SCHEDULED)
             ->condition('fuo.field_unpublish_on_value', $now, '<=');
 
         $ids = $q->execute()->fetchCol();
 
-        return $this->loadMultiple($storage, $ids, $langId);
+        return $this->loadMultiple($storage, $ids, $langcode);
     }
 
     /** @return ContentEntityInterface[] */
@@ -205,11 +206,14 @@ class Scheduler
         return array_filter($entities);
     }
 
-    protected function getCurrentDate()
+    /**
+     * Get the current date in a storage-suitable format
+     * @return string
+     */
+    protected function getCurrentDate(): string
     {
-        $now = new DrupalDateTime('now', DateTimeItemInterface::STORAGE_TIMEZONE);
-
-        return $now->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
+        return (new DrupalDateTime('now', DateTimeItemInterface::STORAGE_TIMEZONE))
+            ->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
     }
 
     /**
