@@ -74,7 +74,7 @@ class Scheduler
     {
         $this->logger->info(sprintf(
             'Publishing scheduled %s with bundle %s, language %s and id %s',
-            $entity->type->getLabel(),
+            $entity->type->entity->label(),
             $entity->bundle(),
             $entity->language()->getId(),
             $entity->id()
@@ -88,7 +88,7 @@ class Scheduler
     {
         $this->logger->info(sprintf(
             'Unpublishing scheduled %s with bundle %s, language %s and id %s',
-            $entity->type->getLabel(),
+            $entity->type->entity->label(),
             $entity->bundle(),
             $entity->language()->getId(),
             $entity->id()
