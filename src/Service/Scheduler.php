@@ -86,10 +86,13 @@ class Scheduler
 
     protected function doUnPublish(ContentEntityInterface $entity)
     {
+        $entityType = $entity->getEntityType();
+        $bundle = $entity->get($entityType->getKey('bundle'))->entity;
+
         $this->logger->info(sprintf(
             'Unpublishing scheduled %s with bundle %s, language %s and id %s',
-            $entity->type->entity->label(),
-            $entity->bundle(),
+            $entityType->getLabel(),
+            $bundle->label(),
             $entity->language()->getId(),
             $entity->id()
         ));
