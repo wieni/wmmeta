@@ -43,3 +43,33 @@ services:
             - '@router.route_provider'
             - '@language_manager'
             - '@request_stack'
+
+    wmmeta.schema_org.manager:
+        class: Drupal\wmmeta\Service\SchemaOrg\SchemaOrgManager
+        tags:
+            - { name: event_subscriber }
+            - { name: service_collector, tag: 'wmmeta.schema_org.provider', call: addProvider }
+        arguments:
+            - '@current_route_match'
+
+    wmmeta.schema_org.provider.breadcrumb_list:
+        class: Drupal\wmmeta\Service\SchemaOrg\Provider\BreadcrumbListSchemaProvider
+        tags:
+            - { name: wmmeta.schema_org.provider }
+        arguments:
+            - '@current_route_match'
+            - '@breadcrumb'
+
+    wmmeta.schema_org.provider.organisation:
+        class: Drupal\wmmeta\Service\SchemaOrg\Provider\OrganisationSchemaProvider
+        tags:
+            - { name: wmmeta.schema_org.provider }
+        arguments:
+            - '@config.factory'
+
+    wmmeta.schema_org.provider.website:
+        class: Drupal\wmmeta\Service\SchemaOrg\Provider\WebsiteSchemaProvider
+        tags:
+            - { name: wmmeta.schema_org.provider }
+        arguments:
+            - '@config.factory'

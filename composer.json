@@ -17,6 +17,8 @@
   ],
   "require": {
     "php": ">=7.0.0",
-    "drupal/core": "^8"
+    "ext-json": "*",
+    "drupal/core": "^8",
+    "spatie/schema-org": "^2.1"
   }
 }
