@@ -16,6 +16,8 @@ class BreadcrumbListSchemaProvider implements SchemaProviderInterface
     protected $routeMatch;
     /** @var BreadcrumbBuilderInterface */
     protected $breadcrumbBuilder;
+    /** @var array */
+    protected $links;
 
     public function __construct(
         RouteMatchInterface $routeMatch,
@@ -27,12 +29,12 @@ class BreadcrumbListSchemaProvider implements SchemaProviderInterface
 
     public function applies(Route $route): bool
     {
-        return true;
+        return !empty($this->getLinks());
     }
 
     public function getSchema(): BaseType
     {
-        $links = $this->breadcrumbBuilder->build($this->routeMatch)->getLinks();
+        $links = $this->getLinks();
 
         $items = array_map(
             function (Link $link, $i) {
@@ -59,5 +61,14 @@ class BreadcrumbListSchemaProvider implements SchemaProviderInterface
 
         return Schema::breadcrumbList()
             ->itemListElement($items);
+    }
+
+    protected function getLinks(): array
+    {
+        if (isset($this->links)) {
+            return $this->links;
+        }
+
+        return $this->links = $this->breadcrumbBuilder->build($this->routeMatch)->getLinks();
     }
 }
