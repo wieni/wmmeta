@@ -51,6 +51,7 @@ services:
             - { name: service_collector, tag: 'wmmeta.schema_org.provider', call: addProvider }
         arguments:
             - '@current_route_match'
+            - '@router.admin_context'
 
     wmmeta.schema_org.provider.breadcrumb_list:
         class: Drupal\wmmeta\Service\SchemaOrg\Provider\BreadcrumbListSchemaProvider

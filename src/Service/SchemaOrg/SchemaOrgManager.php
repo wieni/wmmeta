@@ -2,6 +2,7 @@
 
 namespace Drupal\wmmeta\Service\SchemaOrg;
 
+use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\hook_event_dispatcher\Event\Preprocess\HtmlPreprocessEvent;
 use Drupal\wmmeta\Service\SchemaOrg\Provider\SchemaProviderInterface;
@@ -11,8 +12,11 @@ class SchemaOrgManager implements EventSubscriberInterface
 {
     /** @var SchemaProviderInterface[] */
     protected $providers = [];
+
     /** @var RouteMatchInterface */
     protected $routeMatch;
+    /** @var AdminContext */
+    protected $adminContext;
 
     public static function getSubscribedEvents()
     {
@@ -22,9 +26,11 @@ class SchemaOrgManager implements EventSubscriberInterface
     }
 
     public function __construct(
-        RouteMatchInterface $routeMatch
+        RouteMatchInterface $routeMatch,
+        AdminContext $adminContext
     ) {
         $this->routeMatch = $routeMatch;
+        $this->adminContext = $adminContext;
     }
 
     public function addProvider(SchemaProviderInterface $provider)
@@ -37,6 +43,10 @@ class SchemaOrgManager implements EventSubscriberInterface
     public function onPreprocessHtml(HtmlPreprocessEvent $event)
     {
         $elements = [];
+
+        if ($this->adminContext->isAdminRoute()) {
+            return;
+        }
 
         foreach ($this->providers as $provider) {
             if (
