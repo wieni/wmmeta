@@ -32,12 +32,7 @@ class OrganisationSchemaProvider implements SchemaProviderInterface
             ->sameAs($this->getSameAs());
 
         if ($logo = $this->getLogo()) {
-            $organization->logo(
-                Schema::imageObject()
-                    ->width($logo['width'])
-                    ->height($logo['height'])
-                    ->url($logo['url'])
-            );
+            $organization->logo($logo);
         }
 
         return $organization;
@@ -77,14 +72,9 @@ class OrganisationSchemaProvider implements SchemaProviderInterface
 
     /**
      * The logo of the organization.
-     * @return array [
-     *      'url' => '',
-     *      'width' => 0,
-     *      'height' => 0,
-     * ]
      */
-    protected function getLogo(): array
+    protected function getLogo(): string
     {
-        return [];
+        return '';
     }
 }
