@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\wmmeta\Event\MetaFormAlterEvent;
 use Drupal\wmmeta\WmmetaEvents;
 
@@ -29,15 +30,15 @@ function wmmeta_preprocess_html(&$variables)
     ];
 }
 
-function wmmeta_inline_entity_form_entity_form_alter(&$entity_form)
+function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInterface $formState)
 {
     if (
-        $entity_form['#entity_type'] !== 'meta'
-        || $entity_form['#bundle'] !== 'meta'
+        $entityForm['#entity_type'] !== 'meta'
+        || $entityForm['#bundle'] !== 'meta'
     ) {
         return;
     }
 
     Drupal::getContainer()->get('event_dispatcher')
-        ->dispatch(WmmetaEvents::META_FORM_ALTER, new MetaFormAlterEvent($entity_form));
+        ->dispatch(WmmetaEvents::META_FORM_ALTER, new MetaFormAlterEvent($entityForm, $formState));
 }
