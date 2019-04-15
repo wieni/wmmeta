@@ -50,6 +50,7 @@ services:
             - { name: event_subscriber }
             - { name: service_collector, tag: 'wmmeta.schema_org.provider', call: addProvider }
         arguments:
+            - '@config.factory'
             - '@current_route_match'
             - '@router.admin_context'
 
