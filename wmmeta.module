@@ -42,3 +42,9 @@ function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInte
     Drupal::getContainer()->get('event_dispatcher')
         ->dispatch(WmmetaEvents::META_FORM_ALTER, new MetaFormAlterEvent($entityForm, $formState));
 }
+
+function wmmeta_entity_model_mapping()
+{
+    return \Drupal::service('wmmodel.service.finder')
+        ->findModels('wmmeta');
+}
