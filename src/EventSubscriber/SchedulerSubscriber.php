@@ -73,8 +73,8 @@ class SchedulerSubscriber implements EventSubscriberInterface
 
             $entity->setUnpublished();
 
+            $entity->set('created', $stamp);
             if ($now >= $stamp) {
-                $entity->set('created', $stamp);
                 $entity->setPublished();
             }
         }
