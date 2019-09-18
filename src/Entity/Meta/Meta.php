@@ -1,16 +1,15 @@
 <?php
 
-namespace Drupal\wmmeta\Entity\Eck\Meta;
+namespace Drupal\wmmeta\Entity\Meta;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\eck\Entity\EckEntity;
 use Drupal\imgix\Plugin\Field\FieldType\ImgixFieldType;
 use Drupal\wmmodel\Entity\Interfaces\WmModelInterface;
 use Drupal\wmmodel\Entity\Traits\WmModel;
 
-class Meta extends EckEntity implements WmModelInterface, ContentEntityInterface
+class Meta extends EckEntity implements WmModelInterface
 {
     use WmModel;
 
@@ -84,11 +83,6 @@ class Meta extends EckEntity implements WmModelInterface, ContentEntityInterface
         }
 
         $this->setDateTime('field_unpublish_on', $dateTime);
-    }
-
-    protected static function bundleDeduceRegex()
-    {
-        return '#/Eck/(.*?)/(.*?)$#';
     }
 
     /**

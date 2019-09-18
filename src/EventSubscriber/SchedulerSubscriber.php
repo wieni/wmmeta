@@ -5,7 +5,7 @@ namespace Drupal\wmmeta\EventSubscriber;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\hook_event_dispatcher\Event\Entity\BaseEntityEvent;
 use Drupal\hook_event_dispatcher\HookEventDispatcherInterface;
-use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\Meta\Meta;
 use Drupal\wmmeta\Entity\EntityPublishedInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

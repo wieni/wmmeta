@@ -13,7 +13,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
-use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\Meta\Meta;
 use Psr\Log\LoggerInterface;
 
 class Scheduler

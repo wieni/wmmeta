@@ -2,7 +2,7 @@
 
 namespace Drupal\wmmeta\Entity\Traits;
 
-use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\Meta\Meta;
 
 trait MetaTrait
 {

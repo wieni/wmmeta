@@ -3,7 +3,7 @@
 namespace Drupal\wmmeta\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\Meta\Meta;
 
 interface EntityMetaInterface extends ContentEntityInterface
 {

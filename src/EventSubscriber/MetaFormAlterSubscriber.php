@@ -6,7 +6,7 @@ use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\wmmeta\Entity\Eck\Meta\Meta;
+use Drupal\wmmeta\Entity\Meta\Meta;
 use Drupal\wmmeta\Event\MetaFormAlterEvent;
 use Drupal\wmmeta\WmmetaEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
