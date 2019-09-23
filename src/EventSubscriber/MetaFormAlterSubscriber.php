@@ -2,11 +2,9 @@
 
 namespace Drupal\wmmeta\EventSubscriber;
 
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\wmmeta\Entity\Meta\Meta;
+use Drupal\wmmeta\Entity\Eck\Meta\Meta;
 use Drupal\wmmeta\Event\MetaFormAlterEvent;
 use Drupal\wmmeta\WmmetaEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,9 +26,10 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
 
         $this->addSeoPreview($form);
         $form['#after_build'][] = [static::class, 'addSchedulingFieldsStates'];
+        $form['#after_build'][] = [static::class, 'setPublishDateDefaultValue'];
     }
 
-    protected function addSeoPreview(array $form): array
+    public function addSeoPreview(array $form): array
     {
         $form['seo_preview'] = [
             '#type' => 'item',
@@ -48,16 +47,8 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
         return $form;
     }
 
-    public static function addSchedulingFieldsStates(array $form, FormStateInterface $formState): array
+    public static function addSchedulingFieldsStates(array $form): array
     {
-        /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
-        $entity = $formState->getFormObject()->getEntity();
-        $status = $form['#entity']->getPublishedStatus();
-
-        if ($status && $status !== Meta::SCHEDULED) {
-            $form['field_publish_on']['widget'][0]['value']['#default_value'] = new DrupalDateTime('now');
-        }
-
         $form['field_publish_on']['#states'] = [
             'visible' => [
                 self::getInputSelector($form['field_publish_status']['widget']) => ['value' => Meta::SCHEDULED],
@@ -72,28 +63,17 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
         ];
         $form['field_unpublish_on']['widget'][0]['#theme_wrappers'] = ['form_element'];
 
-        $form['#attached']['library'][] = 'wmmeta/scheduling';
+        return $form;
+    }
 
-        $settings = [
-            'status' => $status,
-            'created_date' => null,
-            'created_time' => null,
-        ];
+    public static function setPublishDateDefaultValue(array $form): array
+    {
+        $publishOn = &$form['field_publish_on']['widget'][0]['value'];
 
-        if ($entity->hasField('created') && !$entity->get('created')->isEmpty()) {
-            $date = \DateTime::createFromFormat(
-                'U',
-                $entity->get('created')->value,
-                new \DateTimeZone(drupal_get_user_timezone())
-            );
-
-            $settings['created_date'] = $date->format('Y-m-d');
-            $settings['created_time'] = $date->format('Y-m-d');
+        if (empty($publishOn['#default_value'])) {
+            $publishOn['date']['#value'] = (new \DateTime)->format('Y-m-d');
+            $publishOn['time']['#value'] = (new \DateTime)->format('H:i:s');
         }
-
-        $form['#attached']['drupalSettings']['wmmeta']['scheduling'] = $settings;
-
-
 
         return $form;
     }

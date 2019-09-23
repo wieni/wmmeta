@@ -1,9 +1,3 @@
-scheduling:
-    js:
-        js/scheduling.js: {}
-    dependencies:
-        - core/jquery
-
 preview:
     js:
         js/preview.js: {}
