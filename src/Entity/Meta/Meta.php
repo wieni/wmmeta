@@ -9,6 +9,12 @@ use Drupal\imgix\Plugin\Field\FieldType\ImgixFieldType;
 use Drupal\wmmodel\Entity\Interfaces\WmModelInterface;
 use Drupal\wmmodel\Entity\Traits\WmModel;
 
+/**
+ * @Model(
+ *     entity_type = "meta",
+ *     bundle = "meta"
+ * )
+ */
 class Meta extends EckEntity implements WmModelInterface
 {
     use WmModel;
