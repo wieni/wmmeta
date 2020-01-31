@@ -12,13 +12,22 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "https://packagist.drupal-composer.org"
+      "url": "https://packages.drupal.org/8"
     }
   ],
   "require": {
     "php": ">=7.0.0",
     "ext-json": "*",
     "drupal/core": "^8.0|^9.0",
-    "spatie/schema-org": "^2.1"
-  }
+    "spatie/schema-org": "^2.1",
+    "drupal/eck": "^1.0@alpha",
+    "wieni/imgix": "^8.2",
+    "wieni/wmcontroller": "^0.8.13",
+    "wieni/wmmedia": "^2.0",
+    "wieni/wmmodel": "^1.0",
+    "drupal/maxlength": "^1.0",
+    "drupal/hook_event_dispatcher": "^1.27"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
