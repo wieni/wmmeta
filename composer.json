@@ -22,7 +22,7 @@
     "spatie/schema-org": "^2.1",
     "drupal/eck": "^1.0@alpha",
     "wieni/imgix": "^8.2",
-    "wieni/wmcontroller": "^0.8.13",
+    "wieni/wmcontroller": "^0.8.4 | ^0.9",
     "wieni/wmmedia": "^2.0",
     "wieni/wmmodel": "^1.0",
     "drupal/maxlength": "^1.0",
