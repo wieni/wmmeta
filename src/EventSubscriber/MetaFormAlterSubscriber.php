@@ -29,7 +29,7 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
         $form['#after_build'][] = [static::class, 'setPublishDateDefaultValue'];
     }
 
-    public function addSeoPreview(array $form): array
+    public function addSeoPreview(array &$form): void
     {
         $form['seo_preview'] = [
             '#type' => 'item',
@@ -43,8 +43,6 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
             ),
             '#weight' => $form['field_meta_image']['#weight'],
         ];
-
-        return $form;
     }
 
     public static function addSchedulingFieldsStates(array $form): array
