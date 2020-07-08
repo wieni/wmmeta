@@ -25,8 +25,7 @@
     "wieni/wmcontroller": "^0.8.4 | ^0.9",
     "wieni/wmmedia": "^2.0",
     "wieni/wmmodel": "^1.0",
-    "drupal/maxlength": "^1.0",
-    "drupal/hook_event_dispatcher": "^1.27"
+    "drupal/maxlength": "^1.0"
   },
   "minimum-stability": "dev",
   "prefer-stable": true

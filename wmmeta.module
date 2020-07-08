@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\wmmeta\Event\MetaFormAlterEvent;
 use Drupal\wmmeta\WmmetaEvents;
@@ -47,4 +48,10 @@ function wmmeta_entity_model_mapping()
 {
     return \Drupal::service('wmmodel.service.finder')
         ->findModels('wmmeta');
+}
+
+function wmmeta_entity_presave(EntityInterface $entity)
+{
+    \Drupal::service('wmmeta.scheduler.subscriber')
+        ->setEntityStatus($entity);
 }

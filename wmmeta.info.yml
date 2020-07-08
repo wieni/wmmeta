@@ -10,5 +10,4 @@ dependencies:
     - wmmedia
     - wmmodel
     - maxlength
-    - hook_event_dispatcher
 core_version_requirement: ^8 || ^9

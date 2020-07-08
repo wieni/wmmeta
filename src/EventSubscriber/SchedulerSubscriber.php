@@ -3,25 +3,14 @@
 namespace Drupal\wmmeta\EventSubscriber;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\hook_event_dispatcher\Event\Entity\BaseEntityEvent;
-use Drupal\hook_event_dispatcher\HookEventDispatcherInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\wmmeta\Entity\Meta\Meta;
 use Drupal\wmmeta\Entity\EntityPublishedInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class SchedulerSubscriber implements EventSubscriberInterface
+class SchedulerSubscriber
 {
-    public static function getSubscribedEvents()
+    public function setEntityStatus(EntityInterface $entity)
     {
-        return [
-            HookEventDispatcherInterface::ENTITY_PRE_SAVE => 'setEntityStatus',
-        ];
-    }
-
-    public function setEntityStatus(BaseEntityEvent $event)
-    {
-        $entity = $event->getEntity();
-
         if (
             !$entity instanceof EntityPublishedInterface
             || !$entity->hasField('field_meta')
