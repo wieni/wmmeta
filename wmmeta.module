@@ -33,10 +33,7 @@ function wmmeta_preprocess_html(&$variables)
 
 function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInterface $formState)
 {
-    if (
-        $entityForm['#entity_type'] !== 'meta'
-        || $entityForm['#bundle'] !== 'meta'
-    ) {
+    if ($entityForm['#entity_type'] !== 'meta') {
         return;
     }
 

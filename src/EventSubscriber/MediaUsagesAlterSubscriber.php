@@ -42,10 +42,7 @@ class MediaUsagesAlterSubscriber implements EventSubscriberInterface
             foreach ($bundles as $bundle => $fields) {
                 /** @var FieldableEntityInterface $entity */
                 foreach ($fields as $fieldName => $entity) {
-                    if (
-                        $entity->getEntityTypeId() !== 'meta'
-                        || $entity->bundle() !== 'meta'
-                    ) {
+                    if ($entity->getEntityTypeId() !== 'meta') {
                         continue;
                     }
 
