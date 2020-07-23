@@ -5,11 +5,9 @@ namespace Drupal\wmmeta\Service\SchemaOrg;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Routing\AdminContext;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\hook_event_dispatcher\Event\Preprocess\HtmlPreprocessEvent;
 use Drupal\wmmeta\Service\SchemaOrg\Provider\SchemaProviderInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class SchemaOrgManager implements EventSubscriberInterface
+class SchemaOrgManager
 {
     /** @var SchemaProviderInterface[] */
     protected $providers = [];
@@ -20,13 +18,6 @@ class SchemaOrgManager implements EventSubscriberInterface
     protected $routeMatch;
     /** @var AdminContext */
     protected $adminContext;
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            'preprocess_html' => 'onPreprocessHtml',
-        ];
-    }
 
     public function __construct(
         ConfigFactoryInterface $configFactory,
@@ -45,7 +36,7 @@ class SchemaOrgManager implements EventSubscriberInterface
         return $this;
     }
 
-    public function onPreprocessHtml(HtmlPreprocessEvent $event)
+    public function onPreprocessHtml(array &$variables)
     {
         $elements = [];
 
@@ -76,13 +67,9 @@ class SchemaOrgManager implements EventSubscriberInterface
             ];
         }
 
-        $attached = $event->getVariables()->get('#attached', []);
-
-        $attached['html_head'] = array_merge(
-            $attached['html_head'] ?? [],
+        $variables['#attached']['html_head'] = array_merge(
+            $variables['#attached']['html_head'] ?? [],
             $elements
         );
-
-        $event->getVariables()->set('#attached', $attached);
     }
 }

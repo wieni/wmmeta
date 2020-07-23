@@ -46,7 +46,6 @@ services:
     wmmeta.schema_org.manager:
         class: Drupal\wmmeta\Service\SchemaOrg\SchemaOrgManager
         tags:
-            - { name: event_subscriber }
             - { name: service_collector, tag: 'wmmeta.schema_org.provider', call: addProvider }
         arguments:
             - '@config.factory'
