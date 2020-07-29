@@ -4,7 +4,7 @@ namespace Drupal\wmmeta\Service;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\imgix\ImgixManager;
+use Drupal\imgix\ImgixManagerInterface;
 use Drupal\imgix\Plugin\Field\FieldType\ImgixFieldType;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaFileExtras;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaImageExtras;
@@ -12,7 +12,7 @@ use Drupal\wmmeta\Entity\EntityMetaInterface;
 
 class MetaService
 {
-    /** @var ImgixManager */
+    /** @var ImgixManagerInterface */
     protected $imgix;
     /** @var LanguageManagerInterface */
     protected $languageManager;
@@ -25,7 +25,7 @@ class MetaService
     protected $entity;
 
     public function __construct(
-        ImgixManager $imgix,
+        ImgixManagerInterface $imgix,
         LanguageManagerInterface $languageManager,
         ConfigFactoryInterface $configFactory
     ) {
