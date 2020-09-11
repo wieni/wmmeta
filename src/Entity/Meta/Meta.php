@@ -120,11 +120,7 @@ class Meta extends EckEntity implements WmModelInterface
             $date = $date->format('U');
         }
 
-        return \DateTime::createFromFormat(
-            'U',
-            $date,
-            (new \DateTimeZone(drupal_get_user_timezone()))
-        );
+        return \DateTime::createFromFormat('U', $date);
     }
 
     protected function setDateTime($fieldName, \DateTime $dateTime)

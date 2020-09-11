@@ -1,7 +1,6 @@
 name: wmmeta
 type: module
 description: Wieni Meta
-core: 8.x
 package: Wieni
 dependencies:
     - eck
@@ -10,4 +9,4 @@ dependencies:
     - wmmedia
     - wmmodel
     - maxlength
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^8.8 || ^9
