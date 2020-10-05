@@ -19,7 +19,7 @@
     "php": ">=7.0.0",
     "ext-json": "*",
     "drupal/core": "^8.0|^9.0",
-    "spatie/schema-org": "^2.1",
+    "spatie/schema-org": "^2|^3",
     "drupal/eck": "^1.0@alpha",
     "wieni/imgix": "^8.2",
     "wieni/wmcontroller": "^0.8.4 | ^0.9 | ^0.10",
