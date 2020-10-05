@@ -25,6 +25,10 @@ function wmmeta_theme()
 
 function wmmeta_preprocess_html(&$variables)
 {
+    \Drupal::getContainer()
+        ->get('wmmeta.schema_org.manager')
+        ->onPreprocessHtml($variables);
+
     $variables['metaHeadTags'] = [
         '#theme' => 'meta_head_tags',
         '#meta' => \Drupal::getContainer()->get('wmmeta.meta')->getMetaData(),
