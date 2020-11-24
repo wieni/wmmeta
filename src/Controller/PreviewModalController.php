@@ -4,26 +4,29 @@ namespace Drupal\wmmeta\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenDialogCommand;
-use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\file\FileInterface;
 use Drupal\imgix\ImgixManagerInterface;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaImageExtras;
+use Drupal\wmmeta\Entity\EntityMetaInterface;
 use Drupal\wmmeta\Service\UrlHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PreviewModalController extends ControllerBase
+class PreviewModalController implements ContainerInjectionInterface
 {
     /** @var UrlHelper */
     protected $urlHelper;
     /** @var ImgixManagerInterface */
     protected $imgixManager;
 
-    public function __construct(
-        UrlHelper $urlHelper,
-        ImgixManagerInterface $imgixManager
-    ) {
-        $this->urlHelper = $urlHelper;
-        $this->imgixManager = $imgixManager;
+    public static function create(ContainerInterface $container)
+    {
+        $instance = new static();
+        $instance->urlHelper = $container->get('wmmeta.url_helper');
+        $instance->imgixManager = $container->get('imgix.manager');
+
+        return $instance;
     }
 
     public function modal()
@@ -82,7 +85,7 @@ class PreviewModalController extends ControllerBase
         return $response;
     }
 
-    protected function getSettings()
+    protected function getSettings(): array
     {
         $settings = [
             'google_div' => '#seopreview-google',
@@ -99,11 +102,19 @@ class PreviewModalController extends ControllerBase
 
         $entity = $this->urlHelper->getRefererEntity();
 
-        if (!$entity) {
+        if (!$entity instanceof EntityMetaInterface) {
             return $settings;
         }
 
-        $meta = $entity->get('field_meta')->entity;
+        if (!$entity->hasField('field_meta_description')) {
+            throw new NotFoundHttpException('Meta does not have a description field');
+        }
+
+        if (!$entity->hasField('field_meta_image')) {
+            throw new NotFoundHttpException('Meta does not have an image field');
+        }
+
+        $meta = $entity->getMeta();
 
         if (!$meta) {
             return $settings;
@@ -128,13 +139,5 @@ class PreviewModalController extends ControllerBase
         }
 
         return $settings;
-    }
-
-    public static function create(ContainerInterface $container)
-    {
-        return new static(
-            $container->get('wmmeta.url_helper'),
-            $container->get('imgix.manager')
-        );
     }
 }

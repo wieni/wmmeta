@@ -13,14 +13,14 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
 {
     use StringTranslationTrait;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             WmmetaEvents::META_FORM_ALTER => 'formAlter',
         ];
     }
 
-    public function formAlter(MetaFormAlterEvent $event)
+    public function formAlter(MetaFormAlterEvent $event): void
     {
         $form = &$event->getForm();
 
@@ -31,6 +31,10 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
 
     public function addSeoPreview(array &$form): void
     {
+        if (!isset($form['field_meta_description'], $form['field_meta_image'])) {
+            return;
+        }
+
         $form['seo_preview'] = [
             '#type' => 'item',
             '#title' => $this->t('Metadata preview'),
@@ -76,7 +80,7 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
         return $form;
     }
 
-    protected static function getInputSelector(array $element)
+    protected static function getInputSelector(array $element): string
     {
         return sprintf(
             ':input[name="%s[%s]"]',

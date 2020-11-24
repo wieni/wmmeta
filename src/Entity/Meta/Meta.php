@@ -19,11 +19,11 @@ class Meta extends EckEntity implements WmModelInterface
 {
     use WmModel;
 
-    const DRAFT = 'draft';
-    const PUBLISHED = 'published';
-    const SCHEDULED = 'scheduled';
+    public const DRAFT = 'draft';
+    public const PUBLISHED = 'published';
+    public const SCHEDULED = 'scheduled';
 
-    public static function getStatuses()
+    public static function getStatuses(): array
     {
         return [
             self::DRAFT => 'Unpublished',
@@ -32,42 +32,49 @@ class Meta extends EckEntity implements WmModelInterface
         ];
     }
 
-    /**
-     * @return ImgixFieldType
-     */
-    public function getImage()
+    public function getImage(): ?ImgixFieldType
     {
-        return $this->get('field_meta_image')->first();
+        if ($this->hasField('field_meta_description')) {
+            return $this->get('field_meta_image')->first();
+        }
+
+        return null;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
-        return (string) $this->get('field_meta_description')->value;
+        if ($this->hasField('field_meta_description')) {
+            return (string) $this->get('field_meta_description')->value;
+        }
+
+        return '';
     }
 
-    public function setDescription($description)
+    public function setDescription($description): void
     {
-        $this->set('field_meta_description', $description);
+        if ($this->hasField('field_meta_description')) {
+            $this->set('field_meta_description', $description);
+        }
     }
 
-    public function getPublishedStatus()
+    public function getPublishedStatus(): string
     {
         return (string) $this->get('field_publish_status')->value;
     }
 
-    public function setPublishedStatus($status)
+    public function setPublishedStatus($status): void
     {
         $this->set('field_publish_status', $status);
     }
 
-    public function getPublishOn()
+    public function getPublishOn(): ?\DateTimeInterface
     {
         return $this->getDateTime('field_publish_on');
     }
 
-    public function setPublishOn(\DateTime $dateTime = null)
+    public function setPublishOn(\DateTimeInterface $dateTime = null): void
     {
-        if (empty($dateTime)) {
+        if ($dateTime === null) {
             $this->set('field_publish_on', null);
             return;
         }
@@ -76,14 +83,14 @@ class Meta extends EckEntity implements WmModelInterface
         $this->setDateTime('field_publish_on', $dateTime);
     }
 
-    public function getUnpublishOn()
+    public function getUnpublishOn(): ?\DateTimeInterface
     {
         return $this->getDateTime('field_unpublish_on');
     }
 
-    public function setUnpublishOn(\DateTime $dateTime = null)
+    public function setUnpublishOn(\DateTimeInterface $dateTime = null): void
     {
-        if (empty($dateTime)) {
+        if ($dateTime === null) {
             $this->set('field_unpublish_on', null);
             return;
         }
@@ -91,12 +98,9 @@ class Meta extends EckEntity implements WmModelInterface
         $this->setDateTime('field_unpublish_on', $dateTime);
     }
 
-    /**
-     * @return bool|\DateTime|null
-     */
-    protected function getDateTime($fieldName)
+    protected function getDateTime($fieldName): ?\DateTimeInterface
     {
-        /** @var \DateTime $date */
+        /** @var \DateTimeInterface $date */
         if (!$this->hasField($fieldName)) {
             return null;
         }
@@ -120,10 +124,10 @@ class Meta extends EckEntity implements WmModelInterface
             $date = $date->format('U');
         }
 
-        return \DateTime::createFromFormat('U', $date);
+        return \DateTime::createFromFormat('U', $date) ?: null;
     }
 
-    protected function setDateTime($fieldName, \DateTime $dateTime)
+    protected function setDateTime($fieldName, \DateTimeInterface $dateTime): void
     {
         $this->set($fieldName, $dateTime->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT));
     }
