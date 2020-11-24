@@ -10,7 +10,7 @@ entity_type: meta
 bundle: meta
 label: Description
 description: 'The description that will be used for teasers, Facebook, Google, etc.'
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
