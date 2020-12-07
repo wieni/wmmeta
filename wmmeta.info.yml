@@ -3,6 +3,7 @@ type: module
 description: Wieni Meta
 package: Wieni
 dependencies:
+    - datetime
     - eck
     - imgix
     - wmcontroller
