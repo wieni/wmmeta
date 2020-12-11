@@ -32,9 +32,9 @@ class Meta extends EckEntity implements WmModelInterface
         ];
     }
 
-    public function getImage(): ?ImgixFieldType
+    public function getImage()
     {
-        if ($this->hasField('field_meta_description')) {
+        if ($this->hasField('field_meta_image')) {
             return $this->get('field_meta_image')->first();
         }
 
