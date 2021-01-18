@@ -106,18 +106,16 @@ class PreviewModalController implements ContainerInjectionInterface
             return $settings;
         }
 
-        if (!$entity->hasField('field_meta_description')) {
+        if (!$meta = $entity->getMeta()) {
+            return $settings;
+        }
+
+        if (!$meta->hasField('field_meta_description')) {
             throw new NotFoundHttpException('Meta does not have a description field');
         }
 
-        if (!$entity->hasField('field_meta_image')) {
+        if (!$meta->hasField('field_meta_image')) {
             throw new NotFoundHttpException('Meta does not have an image field');
-        }
-
-        $meta = $entity->getMeta();
-
-        if (!$meta) {
-            return $settings;
         }
 
         $settings['metadata']['title'] = $entity->label();
