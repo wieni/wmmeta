@@ -119,7 +119,7 @@ class PreviewModalController implements ContainerInjectionInterface
         }
 
         $settings['metadata']['title'] = $entity->label();
-        $settings['metadata']['description'] = $meta->get('field_meta_description')->value;
+        $settings['metadata']['desc'] = $meta->get('field_meta_description')->value;
 
         $url = $entity->toUrl()->setAbsolute()->toString();
         $urlParts = parse_url($url);
