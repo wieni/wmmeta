@@ -6,7 +6,7 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenDialogCommand;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\file\FileInterface;
-use Drupal\imgix\ImgixManagerInterface;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaImageExtras;
 use Drupal\wmmeta\Entity\EntityMetaInterface;
 use Drupal\wmmeta\Service\UrlHelper;
@@ -17,14 +17,11 @@ class PreviewModalController implements ContainerInjectionInterface
 {
     /** @var UrlHelper */
     protected $urlHelper;
-    /** @var ImgixManagerInterface */
-    protected $imgixManager;
 
     public static function create(ContainerInterface $container)
     {
         $instance = new static();
         $instance->urlHelper = $container->get('wmmeta.url_helper');
-        $instance->imgixManager = $container->get('imgix.manager');
 
         return $instance;
     }
@@ -132,10 +129,24 @@ class PreviewModalController implements ContainerInjectionInterface
         $image = $meta->get('field_meta_image')->first();
 
         if ($image instanceof MediaImageExtras && $image->getFile() instanceof FileInterface) {
-            $imageUrl = $this->imgixManager->getImgixUrlByPreset($image->getFile(), 'default');
-            $settings['facebook']['featured_image'] = $imageUrl;
+            $settings['facebook']['featured_image'] = $this->getImageUrl($image->getFile(), 'og');
         }
 
         return $settings;
+    }
+
+    protected function getImageUrl(FileInterface $file, string $imageStyleId): ?string
+    {
+        $path = $file->getFileUri();
+
+        if (!$imageStyle = ImageStyle::load($imageStyleId)) {
+            return null;
+        }
+
+        if (!$imageStyle->supportsUri($path)) {
+            return null;
+        }
+
+        return $imageStyle->buildUrl($path);
     }
 }

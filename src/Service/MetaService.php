@@ -4,16 +4,14 @@ namespace Drupal\wmmeta\Service;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\imgix\ImgixManagerInterface;
-use Drupal\imgix\Plugin\Field\FieldType\ImgixFieldType;
+use Drupal\file\FileInterface;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaFileExtras;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaImageExtras;
 use Drupal\wmmeta\Entity\EntityMetaInterface;
 
 class MetaService
 {
-    /** @var ImgixManagerInterface */
-    protected $imgix;
     /** @var LanguageManagerInterface */
     protected $languageManager;
     /** @var ConfigFactoryInterface */
@@ -25,13 +23,11 @@ class MetaService
     protected $entity;
 
     public function __construct(
-        ImgixManagerInterface $imgix,
         LanguageManagerInterface $languageManager,
         ConfigFactoryInterface $configFactory
     ) {
-        $this->configFactory = $configFactory;
-        $this->imgix = $imgix;
         $this->languageManager = $languageManager;
+        $this->configFactory = $configFactory;
     }
 
     public function getMetaData(): array
@@ -43,7 +39,7 @@ class MetaService
         }
 
         if (!is_string($meta['image'])) {
-            $meta['image'] = $this->getImgixUrl($meta['image']);
+            $meta['image'] = $this->getImageUrl($meta['image']) ?? '';
         }
 
         return $meta;
@@ -84,21 +80,30 @@ class MetaService
         return array_filter($entity->toMetaOGArray());
     }
 
-    protected function getImgixUrl($file = null): ?string
+    protected function getImageUrl($file = null): ?string
     {
         if (
             $file instanceof MediaImageExtras
             || $file instanceof MediaFileExtras
-            || $file instanceof ImgixFieldType
         ) {
             $file = $file->getFile();
         }
 
-        if (!$file) {
-            return '';
+        if (!$file instanceof FileInterface) {
+            return null;
         }
 
-        return $this->imgix->getImgixUrlByPreset($file, 'og');
+        $path = $file->getFileUri();
+
+        if (!$imageStyle = ImageStyle::load('og')) {
+            return null;
+        }
+
+        if (!$imageStyle->supportsUri($path)) {
+            return null;
+        }
+
+        return $imageStyle->buildUrl($path);
     }
 
     protected function getLocale(): string

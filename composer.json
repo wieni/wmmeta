@@ -15,7 +15,6 @@
         "drupal/core": "^8.0 || ^9.0",
         "drupal/eck": "^1.0@alpha",
         "spatie/schema-org": "^2 || ^3",
-        "wieni/imgix": "^8.2",
         "wieni/wmmodel": "^0.1 || ^1.0"
     },
     "require-dev": {

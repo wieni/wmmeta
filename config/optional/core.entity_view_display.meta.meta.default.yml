@@ -10,8 +10,8 @@ dependencies:
     - field.field.meta.meta.field_unpublish_on
   module:
     - datetime
-    - imgix
     - options
+    - wmmedia
 id: meta.meta.default
 targetEntityType: meta
 bundle: meta
@@ -28,10 +28,9 @@ content:
     weight: 8
     label: above
     settings:
-      image_preset: ''
-      image_link: ''
+      image_style: thumbnail
     third_party_settings: {  }
-    type: imgix_formatter
+    type: wmmedia_media_image_default
     region: content
   field_publish_on:
     weight: 10
