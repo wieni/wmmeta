@@ -26,9 +26,9 @@ class Meta extends EckEntity implements WmModelInterface
     public static function getStatuses(): array
     {
         return [
-            self::DRAFT => 'Unpublished',
-            self::PUBLISHED => 'Published',
-            self::SCHEDULED => 'Scheduled',
+            self::DRAFT => t('Unpublished'),
+            self::PUBLISHED => t('Published'),
+            self::SCHEDULED => t('Scheduled'),
         ];
     }
 
