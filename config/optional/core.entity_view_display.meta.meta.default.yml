@@ -28,7 +28,7 @@ content:
     weight: 8
     label: above
     settings:
-      image_style: thumbnail
+      image_style: og
     third_party_settings: {  }
     type: wmmedia_media_image_default
     region: content
