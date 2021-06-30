@@ -2,11 +2,11 @@
 
 namespace Drupal\wmmeta\Entity\Meta;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\eck\Entity\EckEntity;
 use Drupal\imgix\Plugin\Field\FieldType\ImgixFieldType;
 use Drupal\wmmodel\Entity\Interfaces\WmModelInterface;
+use Drupal\wmmodel\Entity\Traits\FieldHelpers;
 use Drupal\wmmodel\Entity\Traits\WmModel;
 
 /**
@@ -18,6 +18,7 @@ use Drupal\wmmodel\Entity\Traits\WmModel;
 class Meta extends EckEntity implements WmModelInterface
 {
     use WmModel;
+    use FieldHelpers;
 
     public const DRAFT = 'draft';
     public const PUBLISHED = 'published';
@@ -96,39 +97,5 @@ class Meta extends EckEntity implements WmModelInterface
         }
 
         $this->setDateTime('field_unpublish_on', $dateTime);
-    }
-
-    protected function getDateTime($fieldName): ?\DateTimeInterface
-    {
-        /** @var \DateTimeInterface $date */
-        if (!$this->hasField($fieldName)) {
-            return null;
-        }
-
-        /* @var \Drupal\Core\Field\FieldItemListInterface $fieldList */
-        $fieldList = $this->get($fieldName);
-        /* @var \Drupal\Core\Field\FieldItemInterface $item */
-        $item = $fieldList->first();
-        $value = ($item) ? $item->getValue() : [];
-
-        // Early check to see if the date is valid, pre validation dates are arrays.
-        if (empty($value['value']) || is_array($value['value'])) {
-            return null;
-        }
-
-        if (!(($date = $fieldList->date) || ($date = $fieldList->value))) {
-            return null;
-        }
-
-        if ($date instanceof DrupalDateTime) {
-            $date = $date->format('U');
-        }
-
-        return \DateTime::createFromFormat('U', $date) ?: null;
-    }
-
-    protected function setDateTime($fieldName, \DateTimeInterface $dateTime): void
-    {
-        $this->set($fieldName, $dateTime->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT));
     }
 }
