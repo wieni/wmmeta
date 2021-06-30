@@ -6,7 +6,6 @@ dependencies:
     - datetime
     - eck
     - imgix
-    - wmcontroller
     - wmmodel
     - maxlength
 core_version_requirement: ^8.8 || ^9
