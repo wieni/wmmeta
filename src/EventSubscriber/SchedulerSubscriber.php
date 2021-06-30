@@ -2,14 +2,13 @@
 
 namespace Drupal\wmmeta\EventSubscriber;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\wmmeta\Entity\Meta\Meta;
 use Drupal\wmmeta\Entity\EntityPublishedInterface;
 
 class SchedulerSubscriber
 {
-    public function setEntityStatus(EntityInterface $entity)
+    public function setEntityStatus(EntityInterface $entity): void
     {
         if (
             !$entity instanceof EntityPublishedInterface
@@ -21,61 +20,56 @@ class SchedulerSubscriber
 
         switch ($entity->getMeta()->getPublishedStatus()) {
             case Meta::PUBLISHED:
-                return $this->publishEntity($entity);
+                $this->publishEntity($entity);
+                break;
             case Meta::DRAFT:
-                return $this->unPublishEntity($entity);
+                $this->unPublishEntity($entity);
+                break;
             case Meta::SCHEDULED:
-                return $this->scheduleEntity($entity);
+                $this->scheduleEntity($entity);
         }
     }
 
-    protected function publishEntity(EntityPublishedInterface $entity)
+    protected function publishEntity(EntityPublishedInterface $entity): void
     {
-        /** @var EntityPublishedInterface $original */
         $original = $entity->original;
         $entity->setPublished();
-        if (!$original || !$original->isPublished()) {
-            $entity->set('created', time());
+
+        if (!$original instanceof EntityPublishedInterface || !$original->isPublished()) {
+            $this->setCreated($entity, time());
         }
+
         $this->clearScheduled($entity);
     }
 
-    protected function unPublishEntity(EntityPublishedInterface $entity)
+    protected function unPublishEntity(EntityPublishedInterface $entity): void
     {
         $entity->setUnpublished();
         $this->clearScheduled($entity);
     }
 
-    protected function scheduleEntity(EntityPublishedInterface $entity)
+    protected function scheduleEntity(EntityPublishedInterface $entity): void
     {
         $now = time();
-
-        $publishOn = $entity->getMeta()->getPublishOn();
-        if (!$publishOn) {
-            $publishOn = $this->getCreated($entity);
-        }
-
+        $publishOn = $entity->getMeta()->getPublishOn() ?? $this->getCreated($entity);
         $unpublishOn = $entity->getMeta()->getUnpublishOn();
 
         if ($publishOn && $stamp = $publishOn->getTimestamp()) {
             $entity->getMeta()->setPublishOn($publishOn);
-
             $entity->setUnpublished();
+            $this->setCreated($entity, $stamp);
 
-            $entity->set('created', $stamp);
             if ($now >= $stamp) {
                 $entity->setPublished();
             }
         }
 
-        if ($unpublishOn && $stamp = $unpublishOn->getTimestamp()) {
-            if ($now >= $stamp) {
-                $entity->setUnpublished();
-            }
+        if ($unpublishOn && ($stamp = $unpublishOn->getTimestamp()) && $now >= $stamp) {
+            $entity->setUnpublished();
         }
     }
 
-    protected function clearScheduled(EntityPublishedInterface $entity)
+    protected function clearScheduled(EntityPublishedInterface $entity): void
     {
         $meta = $entity->getMeta();
         $meta->setPublishOn();
@@ -83,32 +77,24 @@ class SchedulerSubscriber
         $meta->save();
     }
 
-    protected function getCreated(EntityPublishedInterface $entity)
+    protected function getCreated(EntityPublishedInterface $entity): ?\DateTimeInterface
     {
-        /** @var \DateTime $date */
         if (!$entity->hasField('created')) {
             return null;
         }
 
-        /* @var \Drupal\Core\Field\FieldItemListInterface $fieldList */
-        $fieldList = $entity->get('created');
-        /* @var \Drupal\Core\Field\FieldItemInterface $item */
-        $item = $fieldList->first();
-        $value = ($item) ? $item->getValue() : [];
+        $timestamp = $entity->get('created')->value;
 
-        // Early check to see if the date is valid, pre validation dates are arrays.
-        if (empty($value['value']) || is_array($value['value'])) {
-            return null;
+        return \DateTime::createFromFormat('U', $timestamp)
+            ->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+    }
+
+    protected function setCreated(EntityPublishedInterface $entity, int $timestamp): void
+    {
+        if (!$entity->hasField('created')) {
+            return;
         }
 
-        if (!(($date = $fieldList->date) || ($date = $fieldList->value))) {
-            return null;
-        }
-
-        if ($date instanceof DrupalDateTime) {
-            $date = $date->format('U');
-        }
-
-        return \DateTime::createFromFormat('U', $date);
+        $entity->set('created', $timestamp);
     }
 }
