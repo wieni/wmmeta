@@ -7,5 +7,4 @@ dependencies:
     - eck
     - imgix
     - wmmodel
-    - maxlength
 core_version_requirement: ^8.8 || ^9
