@@ -4,7 +4,6 @@ namespace Drupal\wmmeta\Entity\Meta;
 
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\eck\Entity\EckEntity;
-use Drupal\imgix\Plugin\Field\FieldType\ImgixFieldType;
 use Drupal\wmmodel\Entity\Interfaces\WmModelInterface;
 use Drupal\wmmodel\Entity\Traits\FieldHelpers;
 use Drupal\wmmodel\Entity\Traits\WmModel;

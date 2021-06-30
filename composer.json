@@ -22,10 +22,12 @@
     "spatie/schema-org": "^2|^3",
     "drupal/eck": "^1.0@alpha",
     "wieni/imgix": "^8.2",
-    "wieni/wmcontroller": "^0.8.4 | ^0.9 | ^0.10",
-    "wieni/wmmedia": "^2.0",
-    "wieni/wmmodel": "^0.1 | ^1.0",
-    "drupal/maxlength": "^1.0"
+    "wieni/wmmodel": "^0.1 | ^1.0"
+  },
+  "suggest": {
+    "wieni/wmmedia": "Integrates well with this module (only ^2.0)",
+    "wieni/wmcontroller": "Integrates well with this module (only ^0.8.4 | ^0.9 | ^0.10)",
+    "drupal/maxlength": "Allows you to set a maximum length for eg. meta description fields (only ^1.0)"
   },
   "minimum-stability": "dev",
   "prefer-stable": true
