@@ -7,7 +7,6 @@ dependencies:
     - eck
     - imgix
     - wmcontroller
-    - wmmedia
     - wmmodel
     - maxlength
 core_version_requirement: ^8.8 || ^9
