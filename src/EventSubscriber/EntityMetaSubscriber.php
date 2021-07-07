@@ -19,13 +19,13 @@ class EntityMetaSubscriber implements EventSubscriberInterface
         $this->metaService = $metaService;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         $events[WmcontrollerEvents::MAIN_ENTITY_RENDER][] = 'onMainEntity';
         return $events;
     }
 
-    public function onMainEntity(MainEntityEvent $event)
+    public function onMainEntity(MainEntityEvent $event): void
     {
         $entity = $event->getEntity();
 

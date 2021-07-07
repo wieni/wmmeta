@@ -3,7 +3,7 @@
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 
-function wmmeta_uninstall()
+function wmmeta_uninstall(): void
 {
     $entityTypeManager = \Drupal::entityTypeManager();
     $entityFieldManager = \Drupal::getContainer()->get('entity_field.manager');

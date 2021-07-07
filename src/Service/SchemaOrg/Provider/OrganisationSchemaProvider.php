@@ -38,10 +38,7 @@ class OrganisationSchemaProvider implements SchemaProviderInterface
         return $organization;
     }
 
-    /**
-     * The name of the organization
-     * @return string
-     */
+    /** The name of the organization */
     protected function getName(): string
     {
         return $this->config
@@ -49,10 +46,7 @@ class OrganisationSchemaProvider implements SchemaProviderInterface
             ->get('name');
     }
 
-    /**
-     * The URL for the organization's official website.
-     * @return string
-     */
+    /** The URL for the organization's official website. */
     protected function getWebsite(): string
     {
         return Url::fromRoute('<front>')
@@ -70,9 +64,7 @@ class OrganisationSchemaProvider implements SchemaProviderInterface
         return [];
     }
 
-    /**
-     * The logo of the organization.
-     */
+    /** The logo of the organization. */
     protected function getLogo(): string
     {
         return '';

@@ -17,9 +17,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @Action(
- *   id = \Drupal\wmmeta\Plugin\Action\ScheduleAction::ID,
- *   action_label = @Translation("Schedule"),
- *   deriver = "Drupal\wmmeta\Plugin\Action\Derivative\EntityScheduleActionDeriver",
+ *     id = \Drupal\wmmeta\Plugin\Action\ScheduleAction::ID,
+ *     action_label = @Translation("Schedule"),
+ *     deriver = "Drupal\wmmeta\Plugin\Action\Derivative\EntityScheduleActionDeriver",
  * )
  */
 class ScheduleAction extends EntityActionBase implements PluginFormInterface
@@ -45,7 +45,7 @@ class ScheduleAction extends EntityActionBase implements PluginFormInterface
         return $returnAsObject ? $result : $result->isAllowed();
     }
 
-    public function execute(?EntityInterface $entity = null)
+    public function execute(?EntityInterface $entity = null): void
     {
         if (!$entity instanceof EntityPublishedInterface) {
             throw new \InvalidArgumentException(sprintf(

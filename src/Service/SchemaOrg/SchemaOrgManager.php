@@ -29,14 +29,14 @@ class SchemaOrgManager
         $this->adminContext = $adminContext;
     }
 
-    public function addProvider(SchemaProviderInterface $provider)
+    public function addProvider(SchemaProviderInterface $provider): self
     {
         $this->providers[] = $provider;
 
         return $this;
     }
 
-    public function onPreprocessHtml(array &$variables)
+    public function onPreprocessHtml(array &$variables): void
     {
         $elements = [];
 

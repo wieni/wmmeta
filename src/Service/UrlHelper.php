@@ -39,7 +39,7 @@ class UrlHelper
         $this->currentRequest = $requestStack->getCurrentRequest();
     }
 
-    public function getRefererEntity()
+    public function getRefererEntity(): ?EntityInterface
     {
         $refererUrl = $this->currentRequest->server->get('HTTP_REFERER');
         $refererRequest = Request::create($refererUrl);
@@ -52,7 +52,7 @@ class UrlHelper
         return $this->getEntityByUrl($url);
     }
 
-    public function getEntityByRoute(string $routeName, array $routeParameters)
+    public function getEntityByRoute(string $routeName, array $routeParameters): ?EntityInterface
     {
         return $this->getEntityByUrl(
             Url::fromRoute($routeName, $routeParameters)
@@ -73,10 +73,10 @@ class UrlHelper
         $language = $url->getOption('language') ?? $this->languageManager->getCurrentLanguage(LanguageInterface::TYPE_URL);
 
         if ($entityForm = $route->getDefault('_entity_form')) {
-            list($entityTypeId) = explode('.', $entityForm);
+            [$entityTypeId] = explode('.', $entityForm);
             $entityId = $url->getRouteParameters()[$entityTypeId];
         } elseif ($entityAccess = $route->getRequirement('_entity_access')) {
-            list($entityTypeId) = explode('.', $entityAccess);
+            [$entityTypeId] = explode('.', $entityAccess);
             $entityId = $url->getRouteParameters()[$entityTypeId];
         }
 

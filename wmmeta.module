@@ -5,7 +5,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\wmmeta\Event\MetaFormAlterEvent;
 use Drupal\wmmeta\WmmetaEvents;
 
-function wmmeta_cron()
+function wmmeta_cron(): void
 {
     \Drupal::getContainer()->get('wmmeta.scheduler')->runSchedule();
 }
@@ -19,11 +19,11 @@ function wmmeta_theme()
             ],
             'path' => drupal_get_path('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
             'template' => 'head_tags',
-        ]
+        ],
     ];
 }
 
-function wmmeta_preprocess_html(&$variables)
+function wmmeta_preprocess_html(&$variables): void
 {
     \Drupal::getContainer()
         ->get('wmmeta.schema_org.manager')
@@ -35,7 +35,7 @@ function wmmeta_preprocess_html(&$variables)
     ];
 }
 
-function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInterface $formState)
+function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInterface $formState): void
 {
     if ($entityForm['#entity_type'] !== 'meta') {
         return;
@@ -51,7 +51,7 @@ function wmmeta_entity_model_mapping()
         ->findModels('wmmeta');
 }
 
-function wmmeta_entity_presave(EntityInterface $entity)
+function wmmeta_entity_presave(EntityInterface $entity): void
 {
     \Drupal::service('wmmeta.scheduler.subscriber')
         ->setEntityStatus($entity);

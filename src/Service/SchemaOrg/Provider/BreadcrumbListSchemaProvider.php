@@ -7,6 +7,7 @@ use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Spatie\SchemaOrg\BaseType;
+use Spatie\SchemaOrg\ListItem;
 use Spatie\SchemaOrg\Schema;
 use Symfony\Component\Routing\Route;
 
@@ -47,7 +48,7 @@ class BreadcrumbListSchemaProvider implements SchemaProviderInterface
         $links = $this->breadcrumbBuilder->build($this->routeMatch)->getLinks();
 
         $listItems = array_map(
-            static function (Link $link, $i) {
+            static function (Link $link, $i): ?ListItem {
                 $url = $link->getUrl()->setAbsolute()->toString();
                 $text = $link->getText();
 

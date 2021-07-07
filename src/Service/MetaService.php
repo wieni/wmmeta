@@ -21,7 +21,7 @@ class MetaService
 
     /** @var array */
     protected $defaultMeta;
-    /** @var EntityMetaInterface */
+    /** @var EntityMetaInterface|null */
     protected $entity;
 
     public function __construct(
@@ -34,7 +34,7 @@ class MetaService
         $this->languageManager = $languageManager;
     }
 
-    public function getMetaData()
+    public function getMetaData(): array
     {
         $meta = $this->getDefaultMetaData();
 
@@ -49,7 +49,7 @@ class MetaService
         return $meta;
     }
 
-    public function getDefaultMetaData()
+    public function getDefaultMetaData(): array
     {
         if (empty($this->defaultMeta)) {
             $this->defaultMeta = [
@@ -69,28 +69,22 @@ class MetaService
         return $this->defaultMeta;
     }
 
-    /**
-     * @return EntityMetaInterface|null
-     */
-    public function getEntity()
+    public function getEntity(): ?EntityMetaInterface
     {
         return $this->entity;
     }
 
-    /**
-     * @param EntityMetaInterface $entity
-     */
-    public function setEntity(EntityMetaInterface $entity)
+    public function setEntity(?EntityMetaInterface $entity): void
     {
         $this->entity = $entity;
     }
 
-    protected function getEntityMetaData(EntityMetaInterface $entity)
+    protected function getEntityMetaData(EntityMetaInterface $entity): array
     {
         return array_filter($entity->toMetaOGArray());
     }
 
-    protected function getImgixUrl($file = null)
+    protected function getImgixUrl($file = null): ?string
     {
         if (
             $file instanceof MediaImageExtras
@@ -107,17 +101,18 @@ class MetaService
         return $this->imgix->getImgixUrlByPreset($file, 'og');
     }
 
-    protected function getLocale()
+    protected function getLocale(): string
     {
         $locales = [
             'en' => 'en_GB',
             'nl' => 'nl_BE',
             'fr' => 'fr_BE',
         ];
+
         return $locales[$this->getCurrentLangcode()] ?? 'en_GB';
     }
 
-    protected function getCurrentLangcode()
+    protected function getCurrentLangcode(): string
     {
         return $this->languageManager->getCurrentLanguage()->getId();
     }

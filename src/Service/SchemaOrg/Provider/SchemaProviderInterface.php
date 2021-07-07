@@ -10,7 +10,7 @@ interface SchemaProviderInterface
     /**
      * Determines if the provider applies to a specific route
      *
-     * @param null|Route $route
+     * @param Route|null $route
      *   The route to consider attaching to.
      *
      * @return bool

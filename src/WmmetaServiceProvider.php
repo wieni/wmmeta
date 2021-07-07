@@ -4,12 +4,12 @@ namespace Drupal\wmmeta;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceModifierInterface;
-use Drupal\wmmedia\WmmediaEvents;
 use Drupal\wmcontroller\WmcontrollerEvents;
+use Drupal\wmmedia\WmmediaEvents;
 
 class WmmetaServiceProvider implements ServiceModifierInterface
 {
-    public function alter(ContainerBuilder $container)
+    public function alter(ContainerBuilder $container): void
     {
         $modules = $container->getParameter('container.modules');
 

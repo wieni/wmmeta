@@ -44,10 +44,7 @@ class WebsiteSchemaProvider implements SchemaProviderInterface
         return $schema;
     }
 
-    /**
-     * The name of the website
-     * @return string
-     */
+    /** The name of the website */
     protected function getName(): string
     {
         return $this->config
@@ -55,10 +52,7 @@ class WebsiteSchemaProvider implements SchemaProviderInterface
             ->get('name');
     }
 
-    /**
-     * The URL for the website.
-     * @return string
-     */
+    /** The URL for the website. */
     protected function getWebsite(): string
     {
         return Url::fromRoute('<front>')

@@ -25,14 +25,14 @@ class MediaUsagesAlterSubscriber implements EventSubscriberInterface
         $this->entityFieldManager = $entityFieldManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         $events[WmmediaEvents::MEDIA_USAGES_ALTER][] = 'onMediaUsagesAlter';
 
         return $events;
     }
 
-    public function onMediaUsagesAlter(MediaUsagesAlterEvent $event)
+    public function onMediaUsagesAlter(MediaUsagesAlterEvent $event): void
     {
         $usages = &$event->getUsages();
 

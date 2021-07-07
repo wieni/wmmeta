@@ -3,8 +3,8 @@
 namespace Drupal\wmmeta\EventSubscriber;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\wmmeta\Entity\Meta\Meta;
 use Drupal\wmmeta\Entity\EntityPublishedInterface;
+use Drupal\wmmeta\Entity\Meta\Meta;
 
 class SchedulerSubscriber
 {

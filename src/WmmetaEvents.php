@@ -10,5 +10,5 @@ final class WmmetaEvents
      * The event object is an instance of
      * @uses \Drupal\wmmeta\Event\MetaFormAlterEvent
      */
-    const META_FORM_ALTER = 'wmmeta.field_meta_inline_entity_form.alter';
+    public const META_FORM_ALTER = 'wmmeta.field_meta_inline_entity_form.alter';
 }

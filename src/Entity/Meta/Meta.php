@@ -16,8 +16,8 @@ use Drupal\wmmodel\Entity\Traits\WmModel;
  */
 class Meta extends EckEntity implements WmModelInterface
 {
-    use WmModel;
     use FieldHelpers;
+    use WmModel;
 
     public const DRAFT = 'draft';
     public const PUBLISHED = 'published';
@@ -72,7 +72,7 @@ class Meta extends EckEntity implements WmModelInterface
         return $this->getDateTime('field_publish_on');
     }
 
-    public function setPublishOn(\DateTimeInterface $dateTime = null): void
+    public function setPublishOn(?\DateTimeInterface $dateTime = null): void
     {
         if ($dateTime === null) {
             $this->set('field_publish_on', null);
@@ -88,7 +88,7 @@ class Meta extends EckEntity implements WmModelInterface
         return $this->getDateTime('field_unpublish_on');
     }
 
-    public function setUnpublishOn(\DateTimeInterface $dateTime = null): void
+    public function setUnpublishOn(?\DateTimeInterface $dateTime = null): void
     {
         if ($dateTime === null) {
             $this->set('field_unpublish_on', null);

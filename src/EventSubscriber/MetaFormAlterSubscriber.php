@@ -73,8 +73,8 @@ class MetaFormAlterSubscriber implements EventSubscriberInterface
         $publishOn = &$form['field_publish_on']['widget'][0]['value'];
 
         if (empty($publishOn['#default_value'])) {
-            $publishOn['date']['#value'] = (new \DateTime)->format('Y-m-d');
-            $publishOn['time']['#value'] = (new \DateTime)->format('H:i:s');
+            $publishOn['date']['#value'] = (new \DateTime())->format('Y-m-d');
+            $publishOn['time']['#value'] = (new \DateTime())->format('H:i:s');
         }
 
         return $form;

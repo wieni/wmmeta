@@ -29,7 +29,7 @@ class PreviewModalController implements ContainerInjectionInterface
         return $instance;
     }
 
-    public function modal()
+    public function modal(): AjaxResponse
     {
         $content = [];
         $options = [
@@ -51,11 +51,11 @@ class PreviewModalController implements ContainerInjectionInterface
                         'seoPreview' => [
                             'settings' => $this->getSettings(),
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             '#attributes' => [
-                'id' => "wmmeta-preview",
+                'id' => 'wmmeta-preview',
             ],
         ];
 
@@ -74,7 +74,7 @@ class PreviewModalController implements ContainerInjectionInterface
                 '#type' => 'container',
                 '#weight' => 2,
                 '#attributes' => [
-                    'id' => "seopreview-{$container}",
+                    'id' => sprintf('seopreview-%s', $container),
                 ],
             ];
         }

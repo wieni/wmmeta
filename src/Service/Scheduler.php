@@ -43,7 +43,7 @@ class Scheduler
         $this->db = $db;
     }
 
-    public function runSchedule()
+    public function runSchedule(): void
     {
         foreach ($this->getEntityTypes() as $entityType) {
             foreach ($this->languageManager->getLanguages() as $language) {
@@ -70,7 +70,7 @@ class Scheduler
         }
     }
 
-    protected function doPublish(ContentEntityInterface $entity)
+    protected function doPublish(ContentEntityInterface $entity): void
     {
         $entityType = $entity->getEntityType();
         $bundle = $entity->get($entityType->getKey('bundle'))->entity;
@@ -87,7 +87,7 @@ class Scheduler
         $entity->save();
     }
 
-    protected function doUnPublish(ContentEntityInterface $entity)
+    protected function doUnPublish(ContentEntityInterface $entity): void
     {
         $entityType = $entity->getEntityType();
         $bundle = $entity->get($entityType->getKey('bundle'))->entity;
@@ -115,27 +115,27 @@ class Scheduler
             ->fields('data', [$entityType->getKey('id')]);
 
         $q->innerJoin(
-            "{$entityType->id()}__field_meta",
+            sprintf('%s__field_meta', $entityType->id()),
             'fm',
-            "fm.entity_id = data.{$entityType->getKey('id')}"
+            sprintf('fm.entity_id = data.%s', $entityType->getKey('id'))
         );
         $q->innerJoin(
             'meta__field_publish_status',
             'fps',
-            "fps.entity_id = fm.field_meta_target_id AND fps.langcode = '$langcode'"
+            sprintf('fps.entity_id = fm.field_meta_target_id AND fps.langcode = \'%s\'', $langcode)
         );
         $q->innerJoin(
             'meta__field_publish_on',
             'fpo',
-            "fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = '$langcode'"
+            sprintf('fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = \'%s\'', $langcode)
         );
         $q->leftJoin(
             'meta__field_unpublish_on',
             'fuo',
-            "fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = '$langcode'"
+            sprintf('fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = \'%s\'', $langcode)
         );
 
-        $q->condition("data.{$entityType->getKey('published')}", 0)
+        $q->condition(sprintf('data.%s', $entityType->getKey('published')), 0)
             ->condition('data.langcode', $langcode)
             ->condition('fps.field_publish_status_value', Meta::SCHEDULED)
             ->condition('fpo.field_publish_on_value', $now, '<=')
@@ -161,27 +161,27 @@ class Scheduler
             ->fields('data', [$entityType->getKey('id')]);
 
         $q->innerJoin(
-            "{$entityType->id()}__field_meta",
+            sprintf('%s__field_meta', $entityType->id()),
             'fm',
-            "fm.entity_id = data.{$entityType->getKey('id')}"
+            sprintf('fm.entity_id = data.%s', $entityType->getKey('id'))
         );
         $q->innerJoin(
             'meta__field_publish_status',
             'fps',
-            "fps.entity_id = fm.field_meta_target_id AND fps.langcode = '$langcode'"
+            sprintf('fps.entity_id = fm.field_meta_target_id AND fps.langcode = \'%s\'', $langcode)
         );
         $q->innerJoin(
             'meta__field_publish_on',
             'fpo',
-            "fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = '$langcode'"
+            sprintf('fpo.entity_id = fm.field_meta_target_id AND fpo.langcode = \'%s\'', $langcode)
         );
         $q->leftJoin(
             'meta__field_unpublish_on',
             'fuo',
-            "fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = '$langcode'"
+            sprintf('fuo.entity_id = fm.field_meta_target_id AND fuo.langcode = \'%s\'', $langcode)
         );
 
-        $q->condition("data.{$entityType->getKey('published')}", 1)
+        $q->condition(sprintf('data.%s', $entityType->getKey('published')), 1)
             ->condition('data.langcode', $langcode)
             ->condition('fps.field_publish_status_value', Meta::SCHEDULED)
             ->condition('fuo.field_unpublish_on_value', $now, '<=');
@@ -199,7 +199,7 @@ class Scheduler
         }
 
         $entities = array_map(
-            function (ContentEntityInterface $entity) use ($langId) {
+            function (ContentEntityInterface $entity) use ($langId): ?ContentEntityInterface {
                 if (!$entity->hasTranslation($langId)) {
                     return null;
                 }
@@ -212,10 +212,7 @@ class Scheduler
         return array_filter($entities);
     }
 
-    /**
-     * Get the current date in a storage-suitable format
-     * @return string
-     */
+    /** Get the current date in a storage-suitable format */
     protected function getCurrentDate(): string
     {
         return (new DrupalDateTime('now', DateTimeItemInterface::STORAGE_TIMEZONE))
@@ -230,7 +227,7 @@ class Scheduler
     {
         return array_filter(
             $this->entityTypeManager->getDefinitions(),
-            function (EntityTypeInterface $entityType) {
+            function (EntityTypeInterface $entityType): bool {
                 return $entityType->entityClassImplements(FieldableEntityInterface::class)
                     && $entityType->hasKey('published')
                     && isset($this->entityFieldManager->getFieldStorageDefinitions($entityType->id())['field_meta']);
