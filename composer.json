@@ -1,34 +1,47 @@
 {
-  "name": "wieni/wmmeta",
-  "type": "drupal-module",
-  "description": "Provides meta fields & entity scheduling functionality",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Wieni",
-      "email": "info@wieni.be"
+    "name": "wieni/wmmeta",
+    "type": "drupal-module",
+    "description": "Provides meta fields & entity scheduling functionality",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wieni",
+            "email": "info@wieni.be"
+        }
+    ],
+    "require": {
+        "php": "^7.1 || ^8.0",
+        "ext-json": "*",
+        "drupal/core": "^8.0 || ^9.0",
+        "drupal/eck": "^1.0@alpha",
+        "spatie/schema-org": "^2 || ^3",
+        "wieni/imgix": "^8.2",
+        "wieni/wmmodel": "^0.1 || ^1.0"
+    },
+    "require-dev": {
+        "composer-runtime-api": "^2.0",
+        "ergebnis/composer-normalize": "^2.0",
+        "wieni/wmcodestyle": "^1.7"
+    },
+    "suggest": {
+        "drupal/maxlength": "Allows you to set a maximum length for eg. meta description fields (only ^1.0)",
+        "wieni/wmcontroller": "Integrates well with this module (only ^0.8.4 | ^0.9 | ^0.10)",
+        "wieni/wmmedia": "Integrates well with this module (only ^2.0)"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "coding-standards": [
+            "@composer normalize",
+            "rector process",
+            "php-cs-fixer fix --config=.php_cs.php",
+            "phpstan analyse"
+        ]
     }
-  ],
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packages.drupal.org/8"
-    }
-  ],
-  "require": {
-    "php": ">=7.1",
-    "ext-json": "*",
-    "drupal/core": "^8.0|^9.0",
-    "spatie/schema-org": "^2|^3",
-    "drupal/eck": "^1.0@alpha",
-    "wieni/imgix": "^8.2",
-    "wieni/wmmodel": "^0.1 | ^1.0"
-  },
-  "suggest": {
-    "wieni/wmmedia": "Integrates well with this module (only ^2.0)",
-    "wieni/wmcontroller": "Integrates well with this module (only ^0.8.4 | ^0.9 | ^0.10)",
-    "drupal/maxlength": "Allows you to set a maximum length for eg. meta description fields (only ^1.0)"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
 }

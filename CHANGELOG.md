@@ -14,6 +14,8 @@ are welcome.
 ### Changed
 - Translate meta status labels
 - Use field helpers trait on meta model
+- Add coding style fixers
+- Add Composer 2 dev dependency
 
 ### Fixed
 - Fix error when entity does not have a created field

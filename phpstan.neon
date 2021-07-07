@@ -1,0 +1,9 @@
+parameters:
+    ignoreErrors:
+        - '#^Class Drupal\\(wmmedia|wmcontroller)\\.+ not found.$#'
+        - '#^Access to constant .+ on an unknown class Drupal\\(wmmedia|wmcontroller)\\.+.$#'
+        - '#^Parameter .+ of method .+ has invalid typehint type Drupal\\(wmmedia|wmcontroller)\\.+.#'
+
+includes:
+	- vendor/wieni/wmcodestyle/phpstan/custom-rules.neon
+	- vendor/wieni/wmcodestyle/phpstan/drupal-module.neon
