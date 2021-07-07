@@ -30,7 +30,6 @@ services:
     wmmeta.meta:
         class: Drupal\wmmeta\Service\MetaService
         arguments:
-            - '@imgix.manager'
             - '@language_manager'
             - '@config.factory'
 

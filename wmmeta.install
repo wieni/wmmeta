@@ -1,7 +1,11 @@
 <?php
 
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\image\Entity\ImageStyle;
 
 function wmmeta_uninstall(): void
 {
@@ -55,4 +59,42 @@ function wmmeta_uninstall(): void
 
     // Clear cached definitions
     $entityTypeManager->clearCachedDefinitions();
+}
+
+/**
+ * Install the OG image style
+ */
+function wmmeta_update_8001(): void
+{
+    $storage = new FileStorage(__DIR__ . '/config/install');
+    $data = $storage->read('image.style.og');
+
+    if (!ImageStyle::load('og')) {
+        ImageStyle::create($data)->save();
+    }
+}
+
+/**
+ * Update the meta view & form display
+ */
+function wmmeta_update_8002(): void
+{
+    $formDisplay = EntityFormDisplay::load('media.image.default');
+    if ($formDisplay instanceof EntityFormDisplay && $component = $formDisplay->getComponent('field_meta_image')) {
+        $component['settings']['image_style'] = 'og';
+
+        $formDisplay->setComponent('field_meta_image', $component);
+        $formDisplay->save();
+    }
+
+    $viewDisplay = EntityViewDisplay::load('meta.meta.default');
+    if ($viewDisplay instanceof EntityViewDisplay && $component = $viewDisplay->getComponent('field_meta_image')) {
+        $component['type'] = 'wmmedia_media_image_default';
+        $component['settings'] = [
+            'image_style' => 'og',
+        ];
+
+        $viewDisplay->setComponent('field_meta_image', $component);
+        $viewDisplay->save();
+    }
 }
