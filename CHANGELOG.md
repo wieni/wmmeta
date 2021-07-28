@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [1.10.1] - 2021-07-28
+### Added
+- Add image module dependency
+
 ## [1.10.0] - 2021-07-07
 ### Added
 - Add _OG image_ image style

@@ -66,6 +66,11 @@ function wmmeta_uninstall(): void
  */
 function wmmeta_update_8001(): void
 {
+    // Install the new image module dependency if not yet installed
+    \Drupal::getContainer()
+        ->get('module_installer')
+        ->install(['image']);
+
     $storage = new FileStorage(__DIR__ . '/config/install');
     $data = $storage->read('image.style.og');
 
