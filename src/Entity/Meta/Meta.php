@@ -4,9 +4,7 @@ namespace Drupal\wmmeta\Entity\Meta;
 
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\eck\Entity\EckEntity;
-use Drupal\wmmodel\Entity\Interfaces\WmModelInterface;
 use Drupal\wmmodel\Entity\Traits\FieldHelpers;
-use Drupal\wmmodel\Entity\Traits\WmModel;
 
 /**
  * @Model(
@@ -14,10 +12,9 @@ use Drupal\wmmodel\Entity\Traits\WmModel;
  *     bundle = "meta"
  * )
  */
-class Meta extends EckEntity implements WmModelInterface
+class Meta extends EckEntity
 {
     use FieldHelpers;
-    use WmModel;
 
     public const DRAFT = 'draft';
     public const PUBLISHED = 'published';

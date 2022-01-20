@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [1.10.3] - 2022-01-20
+### Changed
+- Add support for wmmodel ^2.0
+- remove use of `WmModel` and `WmModelInterface` as they are removed now
+
 ## [1.10.2] - 2021-10-05
 ### Changed
 - Add support for wmmodel ^0.2 and ^0.3
