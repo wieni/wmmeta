@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [1.10.3] - 2023-02-xx
+### Added 
+- `og:url` and `og:type`
+
 ## [1.10.3] - 2022-01-20
 ### Changed
 - Add support for wmmodel ^2.0
