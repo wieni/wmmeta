@@ -3,6 +3,6 @@ wmmeta.preview_modal:
     defaults:
         _controller: 'Drupal\wmmeta\Controller\PreviewModalController::modal'
     requirements:
-        _access: 'TRUE'
+        _permission: 'access wmmeta preview'
     options:
         _admin_route: TRUE

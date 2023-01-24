@@ -10,6 +10,9 @@ are welcome.
 ## [1.10.3] - 2023-02-xx
 ### Added 
 - `og:url` and `og:type`
+- restrict access to preview modal route: 
+  - Now only those who have permission `access wmmeta preview` can access this route.
+  - This permission has to be granted **manually**, there is no update hook written for this.
 
 ## [1.10.3] - 2022-01-20
 ### Changed
