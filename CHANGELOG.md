@@ -15,6 +15,11 @@ are welcome.
   - This permission has to be granted **manually**, there is no update hook written for this.
 - validate publish and unpublish dates
 
+### Removed
+- Removed some Scheduler.php logging
+  - start scheduler for an entity type has been removed
+  - logging end scheduler per language has been removed
+
 ## [1.10.3] - 2022-01-20
 ### Changed
 - Add support for wmmodel ^2.0
