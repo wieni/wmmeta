@@ -13,6 +13,7 @@ are welcome.
 - restrict access to preview modal route: 
   - Now only those who have permission `access wmmeta preview` can access this route.
   - This permission has to be granted **manually**, there is no update hook written for this.
+- validate publish and unpublish dates
 
 ## [1.10.3] - 2022-01-20
 ### Changed
