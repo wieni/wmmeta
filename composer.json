@@ -12,7 +12,7 @@
     "require": {
         "php": "^7.1 || ^8.0",
         "ext-json": "*",
-        "drupal/core": "^8.0 || ^9.0",
+        "drupal/core": "^9.3 || ^10.0",
         "drupal/eck": "^1.0@alpha",
         "spatie/schema-org": "^2 || ^3",
         "wieni/wmmodel": "^0.1 || ^0.2 || ^0.3 || ^1.0 || ^2.0"

@@ -17,7 +17,7 @@ function wmmeta_theme()
             'variables' => [
                 'meta' => \Drupal::getContainer()->get('wmmeta.meta')->getDefaultMetaData(),
             ],
-            'path' => drupal_get_path('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
+            'path' => \Drupal::getContainer()->get('extension.path.resolver')->getPath('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
             'template' => 'head_tags',
         ],
     ];
