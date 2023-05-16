@@ -15,7 +15,7 @@
         "drupal/core": "^9.3 || ^10.0",
         "drupal/eck": "^1.0@alpha",
         "spatie/schema-org": "^2 || ^3",
-        "wieni/wmmodel": "^0.1 || ^0.2 || ^0.3 || ^1.0 || ^2.0"
+        "drupal/entity_model": "^3.1"
     },
     "require-dev": {
         "composer-runtime-api": "^2.0",
@@ -42,5 +42,10 @@
             "php-cs-fixer fix --config=.php_cs.php",
             "phpstan analyse"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
     }
 }

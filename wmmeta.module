@@ -45,12 +45,6 @@ function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInte
         ->dispatch(new MetaFormAlterEvent($entityForm, $formState), WmmetaEvents::META_FORM_ALTER);
 }
 
-function wmmeta_entity_model_mapping()
-{
-    return \Drupal::service('wmmodel.service.finder')
-        ->findModels('wmmeta');
-}
-
 function wmmeta_entity_presave(EntityInterface $entity): void
 {
     \Drupal::service('wmmeta.scheduler.subscriber')
