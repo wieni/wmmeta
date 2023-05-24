@@ -13,7 +13,7 @@
         "php": "^7.1 || ^8.0",
         "ext-json": "*",
         "drupal/core": "^9.3 || ^10.0",
-        "drupal/eck": "^1.0@alpha",
+        "drupal/eck": "^1.0@alpha || ^2.0",
         "spatie/schema-org": "^2 || ^3",
         "drupal/entity_model": "^3.1"
     },
