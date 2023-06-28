@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class TimeframeConstraint extends CompositeConstraintBase
 {
-    public $invalidTimeframe = 'The publish and unpublish dates do not form a valid timeframe';
+    public $invalidTimeframe = 'The unpublish date has to be after the publish date.';
 
     public function coversFields()
     {
