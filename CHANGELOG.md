@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
-## [1.10.4] - 2023-02-xx
+## [1.10.4] - 2023-06-29
 ### Added 
 - `og:url` and `og:type`
 - restrict access to preview modal route: 
