@@ -47,12 +47,6 @@ class Scheduler
     {
         foreach ($this->getEntityTypes() as $entityType) {
             foreach ($this->languageManager->getLanguages() as $language) {
-                $this->logger->debug(sprintf(
-                    'Running %s scheduler for lang: %s',
-                    $entityType->getLabel(),
-                    $language->getId()
-                ));
-
                 foreach ($this->shouldBePublished($entityType, $language->getId()) as $entity) {
                     $this->doPublish($entity);
                 }
@@ -60,13 +54,12 @@ class Scheduler
                 foreach ($this->shouldBeUnpublished($entityType, $language->getId()) as $entity) {
                     $this->doUnPublish($entity);
                 }
-
-                $this->logger->debug(sprintf(
-                    'Finished %s scheduler for lang: %s',
-                    $entityType->getLabel(),
-                    $language->getId()
-                ));
             }
+
+            $this->logger->debug(sprintf(
+                'Finished %s scheduler',
+                $entityType->getLabel()
+            ));
         }
     }
 

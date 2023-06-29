@@ -56,3 +56,13 @@ function wmmeta_entity_presave(EntityInterface $entity): void
     \Drupal::service('wmmeta.scheduler.subscriber')
         ->setEntityStatus($entity);
 }
+
+/**
+ * Implements @see hook_entity_type_alter().
+ */
+function wmmeta_entity_type_alter(array &$entityTypes): void
+{
+    if (isset($entityTypes['meta'])) {
+        $entityTypes['meta']->addConstraint('timeframe_constraint');
+    }
+}

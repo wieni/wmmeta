@@ -103,3 +103,19 @@ function wmmeta_update_8002(): void
         $viewDisplay->save();
     }
 }
+
+/**
+ * Allow all roles to access wmmeta preview
+ * except anonymous and authenticated
+ */
+function wmmedia_update_8009(): void
+{
+    $storage = \Drupal::entityTypeManager()->getStorage('user_role');
+    $ids = $storage->getQuery()->condition('id', ['anonymous', 'authenticated'], 'NOT IN')->accessCheck(false)->execute();
+    $roles = $storage->loadMultiple($ids);
+
+    foreach ($roles as $role) {
+        $role->grantPermission('access wmmeta preview');
+        $role->save();
+    }
+}

@@ -51,7 +51,9 @@ class MetaService
             $this->defaultMeta = [
                 'site_name' => $this->configFactory->get('system.site')->get('name'),
                 'locale' => $this->getLocale(),
+                'type' => 'website',
                 'description' => '',
+                'url' => '',
                 'image' => '',
                 'image_width' => '1280',
                 'image_height' => '720',

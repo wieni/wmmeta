@@ -42,12 +42,22 @@ trait MetaTrait
         $meta = [
             'title' => $this->label(),
             'description' => $this->getMeta()->getDescription(),
+            'url' => $this->toUrl()->setAbsolute(true)->toString()
         ];
 
         if ($image = $this->getMeta()->getImage()) {
             $meta['image'] = $image;
         }
 
+        if ($this->getOgType()) {
+            $meta['type'] = $this->getOgType();
+        }
+
         return $meta;
+    }
+
+    public function getOgType(): ?string
+    {
+        return null;
     }
 }

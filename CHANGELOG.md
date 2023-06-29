@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [1.10.4] - 2023-02-xx
+### Added 
+- `og:url` and `og:type`
+- restrict access to preview modal route: 
+  - Now only those who have permission `access wmmeta preview` can access this route.
+  - Update hook has been added to grant this permission to all roles (except anonymous and authenticated)
+- validate publish and unpublish dates
+
+### Removed
+- Removed some Scheduler.php logging
+  - start scheduler for an entity type has been removed
+  - logging end scheduler per language has been removed
+
 ## [1.10.3] - 2022-01-20
 ### Changed
 - Add support for wmmodel ^2.0
