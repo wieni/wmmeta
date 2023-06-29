@@ -111,7 +111,7 @@ function wmmeta_update_8002(): void
 function wmmedia_update_8009(): void
 {
     $storage = \Drupal::entityTypeManager()->getStorage('user_role');
-    $ids = $storage->getQuery()->condition('id', ['anonymous', 'authenticated'], 'NOT IN')->execute();
+    $ids = $storage->getQuery()->condition('id', ['anonymous', 'authenticated'], 'NOT IN')->accessCheck(false)->execute();
     $roles = $storage->loadMultiple($ids);
 
     foreach ($roles as $role) {
