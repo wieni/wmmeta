@@ -105,10 +105,9 @@ function wmmeta_update_8002(): void
 }
 
 /**
- * Allow all roles to access wmmeta preview
- * except anonymous and authenticated
+ * Allow all roles to access wmmeta preview except anonymous and authenticated
  */
-function wmmedia_update_8009(): void
+function wmmeta_update_8003(): void
 {
     $storage = \Drupal::entityTypeManager()->getStorage('user_role');
     $ids = $storage->getQuery()->condition('id', ['anonymous', 'authenticated'], 'NOT IN')->accessCheck(false)->execute();
