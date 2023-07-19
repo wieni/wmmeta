@@ -9,6 +9,7 @@ use Drupal\file\FileInterface;
 use Drupal\image\Entity\ImageStyle;
 use Drupal\wmmedia\Plugin\Field\FieldType\MediaImageExtras;
 use Drupal\wmmeta\Entity\EntityMetaInterface;
+use Drupal\wmmeta\Service\MetaService;
 use Drupal\wmmeta\Service\UrlHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,11 +18,14 @@ class PreviewModalController implements ContainerInjectionInterface
 {
     /** @var UrlHelper */
     protected $urlHelper;
+    /** @var MetaService */
+    protected $metaService;
 
     public static function create(ContainerInterface $container)
     {
         $instance = new static();
         $instance->urlHelper = $container->get('wmmeta.url_helper');
+        $instance->metaService = $container->get('wmmeta.meta');
 
         return $instance;
     }
@@ -115,8 +119,10 @@ class PreviewModalController implements ContainerInjectionInterface
             throw new NotFoundHttpException('Meta does not have an image field');
         }
 
-        $settings['metadata']['title'] = $entity->label();
-        $settings['metadata']['desc'] = $meta->get('field_meta_description')->value;
+        $metaData = $this->metaService->getEntityMetaData($entity);
+
+        $settings['metadata']['title'] = $metaData['title'] ?? $entity->label();
+        $settings['metadata']['desc'] = $metaData['description'] ?? $meta->get('field_meta_description')->value;
 
         $url = $entity->toUrl()->setAbsolute()->toString();
         $urlParts = parse_url($url);
@@ -126,7 +132,7 @@ class PreviewModalController implements ContainerInjectionInterface
             'base_domain' => sprintf('%s://%s', $urlParts['scheme'], $urlParts['host']),
         ];
 
-        $image = $meta->get('field_meta_image')->first();
+        $image = $metaData['image'] ?? $meta->get('field_meta_image')->first();
 
         if ($image instanceof MediaImageExtras && $image->getFile() instanceof FileInterface) {
             $settings['facebook']['featured_image'] = $this->getImageUrl($image->getFile(), 'og');

@@ -77,7 +77,7 @@ class MetaService
         $this->entity = $entity;
     }
 
-    protected function getEntityMetaData(EntityMetaInterface $entity): array
+    public function getEntityMetaData(EntityMetaInterface $entity): array
     {
         return array_filter($entity->toMetaOGArray());
     }
