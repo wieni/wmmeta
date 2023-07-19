@@ -119,7 +119,12 @@ class PreviewModalController implements ContainerInjectionInterface
             throw new NotFoundHttpException('Meta does not have an image field');
         }
 
-        $metaData = $this->metaService->getEntityMetaData($entity);
+        // This is like calling `getEntityMetaData()`, but manually since it's not public.
+        // We first save `MetaService` entity, get the metadata, and then restore the entity.
+        $originalEntity = $this->metaService->getEntity();
+        $this->metaService->setEntity($entity);
+        $metaData = $this->metaService->getMetaData();
+        $this->metaService->setEntity($originalEntity);
 
         $settings['metadata']['title'] = $metaData['title'] ?? $entity->label();
         $settings['metadata']['desc'] = $metaData['description'] ?? $meta->get('field_meta_description')->value;
@@ -132,11 +137,7 @@ class PreviewModalController implements ContainerInjectionInterface
             'base_domain' => sprintf('%s://%s', $urlParts['scheme'], $urlParts['host']),
         ];
 
-        $image = $metaData['image'] ?? $meta->get('field_meta_image')->first();
-
-        if ($image instanceof MediaImageExtras && $image->getFile() instanceof FileInterface) {
-            $settings['facebook']['featured_image'] = $this->getImageUrl($image->getFile(), 'og');
-        }
+        $settings['facebook']['featured_image'] = $metaData['image'];
 
         return $settings;
     }
