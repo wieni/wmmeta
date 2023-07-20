@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [1.11.0] - 2023-07-20
+### Changed
+- Rely on `MetaService` to preview title, description and image metadata
+
 ## [1.10.4] - 2023-06-29
 ### Added 
 - `og:url` and `og:type`
