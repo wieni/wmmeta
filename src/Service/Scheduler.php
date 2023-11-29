@@ -223,6 +223,7 @@ class Scheduler
             function (EntityTypeInterface $entityType): bool {
                 return $entityType->entityClassImplements(FieldableEntityInterface::class)
                     && $entityType->hasKey('published')
+                    && isset($this->entityFieldManager->getFieldStorageDefinitions($entityType->id())[$entityType->getKey('published')])
                     && isset($this->entityFieldManager->getFieldStorageDefinitions($entityType->id())['field_meta']);
             }
         );
