@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [2.0.0] - 2023-12-18
+### Changed [BC]
+- replace use of `wieni/wmmodel` with [`drupal/entity_model`](https://www.drupal.org/project/entity_model)
+   - Read the [upgrade guide](https://github.com/wieni/wmmodel/blob/main/UPGRADING.md) of `wieni/wmmodel` to migrate to `drupal/entity_model`
+
 ## [1.11.0] - 2023-07-20
 ### Changed
 - Rely on `MetaService` to preview title, description and image metadata
@@ -23,10 +28,6 @@ are welcome.
 - Removed some Scheduler.php logging
   - start scheduler for an entity type has been removed
   - logging end scheduler per language has been removed
-
-## [Unreleased]
-### Changed
-- replace use of wieni/wmmodel with drupal/entity_model
 
 ## [1.10.3] - 2022-01-20
 ### Changed
