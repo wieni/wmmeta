@@ -6,5 +6,5 @@ dependencies:
     - datetime
     - eck
     - image
-    - wmmodel
-core_version_requirement: ^8.8 || ^9
+    - entity_model
+core_version_requirement: ^9.3 || ^10

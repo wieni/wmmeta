@@ -32,6 +32,7 @@ function wmmeta_uninstall(): void
         $ids = $fieldConfigStorage->getQuery()
             ->condition('field_name', 'field_meta')
             ->condition('entity_type', $entityType->id())
+            ->accessCheck(false)
             ->execute();
 
         if (empty($ids)) {
@@ -45,6 +46,7 @@ function wmmeta_uninstall(): void
     // Delete bundle
     $ids = $metaStorage->getQuery()
         ->condition('type', 'meta')
+        ->accessCheck(false)
         ->execute();
 
     if (!empty($ids)) {

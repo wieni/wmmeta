@@ -17,7 +17,7 @@ function wmmeta_theme()
             'variables' => [
                 'meta' => \Drupal::getContainer()->get('wmmeta.meta')->getDefaultMetaData(),
             ],
-            'path' => drupal_get_path('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
+            'path' => \Drupal::getContainer()->get('extension.path.resolver')->getPath('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
             'template' => 'head_tags',
         ],
     ];
@@ -42,13 +42,7 @@ function wmmeta_inline_entity_form_entity_form_alter(&$entityForm, FormStateInte
     }
 
     Drupal::getContainer()->get('event_dispatcher')
-        ->dispatch(WmmetaEvents::META_FORM_ALTER, new MetaFormAlterEvent($entityForm, $formState));
-}
-
-function wmmeta_entity_model_mapping()
-{
-    return \Drupal::service('wmmodel.service.finder')
-        ->findModels('wmmeta');
+        ->dispatch(new MetaFormAlterEvent($entityForm, $formState), WmmetaEvents::META_FORM_ALTER);
 }
 
 function wmmeta_entity_presave(EntityInterface $entity): void

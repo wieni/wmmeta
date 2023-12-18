@@ -12,9 +12,9 @@ are welcome.
 - Rely on `MetaService` to preview title, description and image metadata
 
 ## [1.10.4] - 2023-06-29
-### Added 
+### Added
 - `og:url` and `og:type`
-- restrict access to preview modal route: 
+- restrict access to preview modal route:
   - Now only those who have permission `access wmmeta preview` can access this route.
   - Update hook has been added to grant this permission to all roles (except anonymous and authenticated)
 - validate publish and unpublish dates
@@ -23,6 +23,10 @@ are welcome.
 - Removed some Scheduler.php logging
   - start scheduler for an entity type has been removed
   - logging end scheduler per language has been removed
+
+## [Unreleased]
+### Changed
+- replace use of wieni/wmmodel with drupal/entity_model
 
 ## [1.10.3] - 2022-01-20
 ### Changed
@@ -51,7 +55,7 @@ are welcome.
 - Fix error when entity does not have a created field
 
 ### Removed
-- Remove `wieni/imgix` dependency. If you plan to keep using the `imgix` module, make sure to install v9 since previous 
+- Remove `wieni/imgix` dependency. If you plan to keep using the `imgix` module, make sure to install v9 since previous
   versions don't support image styles.
 - Remove `wieni/wmcontroller` dependency. Support hasn't been removed, but the dependency is now optional.
 - Remove `wieni/wmmedia` dependency. Support hasn't been removed, but the dependency is now optional.

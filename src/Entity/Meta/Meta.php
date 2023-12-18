@@ -4,7 +4,7 @@ namespace Drupal\wmmeta\Entity\Meta;
 
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\eck\Entity\EckEntity;
-use Drupal\wmmodel\Entity\Traits\FieldHelpers;
+use Drupal\entity_model\Entity\Traits\FieldHelpers;
 
 /**
  * @Model(
