@@ -3,6 +3,8 @@
 namespace Drupal\wmmeta\Plugin\Validation\Constraint;
 
 use Drupal\Core\Entity\Plugin\Validation\Constraint\CompositeConstraintBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Validation\Attribute\Constraint as ConstraintAttribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -12,6 +14,7 @@ use Symfony\Component\Validator\Constraint;
  *     type = "entity:meta"
  * )
  */
+#[ConstraintAttribute(id: 'timeframe_constraint', label: new TranslatableMarkup('Timeframe', [], ['context' => 'Validation']), type: 'entity:meta')]
 class TimeframeConstraint extends CompositeConstraintBase
 {
     public $invalidTimeframe = 'The unpublish date has to be after the publish date.';

@@ -4,6 +4,7 @@ namespace Drupal\wmmeta\Entity\Meta;
 
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\eck\Entity\EckEntity;
+use Drupal\entity_model\Attribute\Model;
 use Drupal\entity_model\Entity\Traits\FieldHelpers;
 
 /**
@@ -12,6 +13,7 @@ use Drupal\entity_model\Entity\Traits\FieldHelpers;
  *     bundle = "meta"
  * )
  */
+#[Model(entity_type: 'meta', bundle: 'meta')]
 class Meta extends EckEntity
 {
     use FieldHelpers;

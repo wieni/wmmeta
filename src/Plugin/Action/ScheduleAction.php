@@ -3,12 +3,14 @@
 namespace Drupal\wmmeta\Plugin\Action;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Action\Attribute\Action;
 use Drupal\Core\Action\Plugin\Action\EntityActionBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 use Drupal\wmmeta\Entity\EntityPublishedInterface;
@@ -22,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     deriver = "Drupal\wmmeta\Plugin\Action\Derivative\EntityScheduleActionDeriver",
  * )
  */
+#[Action(id: self::ID, action_label: new TranslatableMarkup('Schedule'), deriver: 'Drupal\wmmeta\Plugin\Action\Derivative\EntityScheduleActionDeriver')]
 class ScheduleAction extends EntityActionBase implements PluginFormInterface
 {
     public const ID = 'wmmeta:entity:schedule_action';
