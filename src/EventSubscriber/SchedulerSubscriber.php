@@ -32,7 +32,10 @@ class SchedulerSubscriber
 
     protected function publishEntity(EntityPublishedInterface $entity): void
     {
-        $original = $entity->original;
+        // EntityInterface::getOriginal() exists since Drupal 11.2.
+        $original = method_exists(EntityInterface::class, 'getOriginal')
+            ? $entity->getOriginal()
+            : $entity->original;
         $entity->setPublished();
 
         if (!$original instanceof EntityPublishedInterface || !$original->isPublished()) {
