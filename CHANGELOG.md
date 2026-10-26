@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [2.2.0] - 2026-10-26
+### Added
+- Drupal 12 support.
+- Attributes next to the annotations of the `Meta` model, the timeframe constraint and the schedule action.
+
+### Fixed
+- Publishing a scheduled entity reads the original entity with `getOriginal()`; the `original` property is removed in
+  Drupal 12.
+
+### Removed
+- Support for Drupal before 11.4 and PHP before 8.2. The module now requires Drupal `^11.4 || ^12` and PHP 8.2 or
+  higher.
+
 ## [2.0.0] - 2023-12-18
 ### Changed [BC]
 - replace use of `wieni/wmmodel` with [`drupal/entity_model`](https://www.drupal.org/project/entity_model)
