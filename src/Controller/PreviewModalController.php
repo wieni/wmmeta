@@ -34,7 +34,7 @@ class PreviewModalController implements ContainerInjectionInterface
     {
         $content = [];
         $options = [
-            'dialogClass' => 'wmmeta-preview-dialog',
+            'classes' => ['ui-dialog' => 'wmmeta-preview-dialog'],
             'width' => 550,
             'position' => [
                 'my' => 'right bottom',
