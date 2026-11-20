@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class TimeframeConstraintValidator extends ConstraintValidator
 {
-    public function validate($meta, Constraint $constraint)
+    public function validate(mixed $meta, Constraint $constraint): void
     {
         if (!$constraint instanceof TimeframeConstraint) {
             return;
