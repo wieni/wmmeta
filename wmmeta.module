@@ -14,13 +14,22 @@ function wmmeta_theme()
 {
     return [
         'meta_head_tags' => [
+            // The default is filled in per render (wmmeta_preprocess_meta_head_tags()):
+            // a value computed here is cached in the theme registry, frozen to the
+            // language of the request that built it, and can hold entities (a
+            // site's default image) that don't survive the cache round trip.
             'variables' => [
-                'meta' => \Drupal::getContainer()->get('wmmeta.meta')->getDefaultMetaData(),
+                'meta' => null,
             ],
             'path' => \Drupal::getContainer()->get('extension.path.resolver')->getPath('module', 'wmmeta') . DIRECTORY_SEPARATOR . 'templates',
             'template' => 'head_tags',
         ],
     ];
+}
+
+function wmmeta_preprocess_meta_head_tags(array &$variables): void
+{
+    $variables['meta'] ??= \Drupal::getContainer()->get('wmmeta.meta')->getDefaultMetaData();
 }
 
 function wmmeta_preprocess_html(&$variables): void
