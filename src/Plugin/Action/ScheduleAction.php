@@ -5,7 +5,6 @@ namespace Drupal\wmmeta\Plugin\Action;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Action\Attribute\Action;
 use Drupal\Core\Action\Plugin\Action\EntityActionBase;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\PluginFormInterface;
@@ -48,13 +47,13 @@ class ScheduleAction extends EntityActionBase implements PluginFormInterface
         return $returnAsObject ? $result : $result->isAllowed();
     }
 
-    public function execute(?EntityInterface $entity = null): void
+    public function execute(?object $entity = null): void
     {
         if (!$entity instanceof EntityPublishedInterface) {
             throw new \InvalidArgumentException(sprintf(
                 'Expected an instance of %s. Got: %s',
                 EntityPublishedInterface::class,
-                get_class($entity)
+                get_debug_type($entity)
             ));
         }
 

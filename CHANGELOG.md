@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This changelog is incomplete. Pull requests with entries before 1.10.0
 are welcome.
 
+## [Unreleased]
+### Fixed
+- Drupal 12: `ScheduleAction::execute()` accepts `?object`, matching Drupal 12's
+  `ExecutableInterface::execute(?object $object = NULL)`. The 2.2.0 signature (`?EntityInterface`) was a fatal error
+  as soon as the class loaded. Anything that isn't an `EntityPublishedInterface` still throws an
+  `\InvalidArgumentException`.
+- Symfony 8: `TimeframeConstraintValidator::validate()` declares `mixed $meta` and `: void`, matching
+  `ConstraintValidator::validate()`. Without them the class was a fatal error on Drupal 12.
+- Drupal 12: the SEO preview modal passes the `classes` dialog option instead of `dialogClass`, which Drupal 12 no
+  longer translates.
+
 ## [2.2.0] - 2026-10-26
 ### Added
 - Drupal 12 support.
